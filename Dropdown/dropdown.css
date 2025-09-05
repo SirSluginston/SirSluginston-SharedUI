@@ -1,0 +1,63 @@
+/* SharedUI Dropdown Styles */
+:root {
+  --dropdown-bg: var(--color-bg, #fff);
+  --dropdown-border: var(--color-secondary, #4B3A78);
+  --dropdown-text: var(--color-text, #222);
+  --dropdown-shadow: 0 4px 16px #0002;
+}
+
+
+.sharedui-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.sharedui-dropdown-trigger {
+  color: var(--color-text);
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5em 1.2em;
+  transition: color 0.2s;
+  text-shadow: 0 1px 4px var(--color-accent);
+  outline: none;
+  display: inline-block;
+}
+.sharedui-dropdown-trigger:hover,
+.sharedui-dropdown-trigger:focus {
+  color: var(--color-accent);
+  text-shadow: 0 0 4px var(--color-secondary, #4B3A78, 0.2);
+}
+
+.sharedui-dropdown-content {
+  display: none;
+  position: absolute;
+  background: var(--dropdown-bg);
+  min-width: 180px;
+  box-shadow: var(--dropdown-shadow);
+  border: 2px solid var(--dropdown-border);
+  border-radius: 0.5rem;
+  z-index: 100;
+  margin-top: 0.5rem;
+  padding: 0.5rem 0;
+}
+
+.sharedui-dropdown.open .sharedui-dropdown-content {
+  display: block;
+}
+
+.sharedui-dropdown-content a {
+  color: var(--dropdown-text);
+  padding: 0.5rem 1.5rem;
+  text-decoration: none;
+  display: block;
+  border-radius: 0.3rem;
+}
+
+.sharedui-dropdown-content a:hover {
+  background: var(--dropdown-border);
+  color: var(--dropdown-bg);
+}

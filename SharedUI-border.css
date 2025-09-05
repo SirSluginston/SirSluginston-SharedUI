@@ -1,0 +1,61 @@
+/* --- SharedUI Outer Border and Layout --- */
+
+/* Main outer border for SharedUI */
+.sharedui-outer-border {
+  border: 2px solid var(--color-secondary);
+  border-radius: 0;
+  margin: 0;
+  width: 100%;
+  min-height: 100vh;
+  background: var(--color-bg);
+  box-sizing: border-box;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 0;
+}
+
+html, body {
+  background: var(--color-bg);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* Remove left/right borders from all inner elements, only use border-bottom for separation */
+#header-container, #navbar-container, #body-container {
+  border-left: none !important;
+  border-right: none !important;
+}
+
+/* Header border (bottom only) */
+header.shared-header {
+  border-bottom: 2px solid var(--color-secondary);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+
+/* Navbar border (bottom only) */
+.shared-navbar {
+  border-bottom: 2px solid var(--color-secondary);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+
+.shared-body {
+  border-bottom: 2px solid var(--color-secondary);
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+
+.shared-footer {
+  border-top: 2px solid var(--color-secondary);
+  border-bottom: none;
+  border-left: none;
+  border-right: none;
+}

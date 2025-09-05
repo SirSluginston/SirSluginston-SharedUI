@@ -1,0 +1,140 @@
+<!--
+    SharedUI About SirSluginston Co Page
+    - Modular, reusable, and future-proof (like a slug in a suit)
+    - All content and branding injected/configured via JS and projects.json
+    - If you break this, you owe SirSluginston a coffee
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <script>
+    // Insert ?project=SharedUI in the URL if missing, without reloading
+        (function() {
+            var params = new URLSearchParams(window.location.search);
+            if (!params.has('project')) {
+                params.set('project', 'SharedUI');
+                var newUrl = window.location.pathname + '?' + params.toString();
+                window.history.replaceState({}, '', newUrl);
+            }
+        })();
+        </script>
+    <!-- SharedUI core styles and config: don't touch unless you like chaos -->
+    <link rel="stylesheet" href="SharedUI-border.css">
+    <link rel="stylesheet" href="variables.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About SirSluginston Co</title>
+    <!-- SharedUI component styles: keep it snazzy -->
+    <link rel="stylesheet" href="Header/header.css">
+    <link rel="stylesheet" href="Navbar/navbar.css">
+    <link rel="stylesheet" href="Body/body.css">
+    <link rel="stylesheet" href="Footer/footer.css">
+    <link rel="stylesheet" href="ThemeToggle/theme-toggle.css">
+    <link rel="stylesheet" href="Dropdown/dropdown.css">
+    <link rel="stylesheet" href="Modals/modal.css">
+        <link rel="stylesheet" href="Hero/hero.css">
+</head>
+<body>
+    <div class="sharedui-outer-border">
+    <!-- SharedUI Header: top hat required -->
+        <div id="header-container"></div>
+    <!-- SharedUI Navbar: navigation for the truly lost -->
+        <div id="site-navbar"></div>
+    <!-- SharedUI Hero: page title and tagline -->
+    <div id="shared-hero-container"></div>
+    <!-- SharedUI Body: where the magic (and company lore) happens -->
+    <div id="body-container">
+        <div class="shared-body">
+            <div class="body-content" id="shared-body-content">
+                <p>
+                    Over a decade ago, SirSluginston wasn’t a company or a brand—he was simply a funny idea, born from a late-night burst of creativity between two friends. The mustached, monocled slug quickly took on a life of his own, coming to represent a way of life: move at your own pace, with purpose, and leave a distinct trail everywhere you go.
+                </p>
+                <p>
+                    As my ambitions evolved beyond gaming, SirSluginston evolved alongside. Today, he stands as the crown of innovation—a home for bold ideas, where ventures are cultivated until they’re ready to flourish. <span id="project-counter"></span>
+                </p>
+                <ul>
+                    <li><strong>Debonair Gastropod Genius</strong> (the main tagline)</li>
+                    <li>The crown of innovation</li>
+                    <li>A creative company bringing bold ideas to life</li>
+                    <li>Whimsical but clean; playful but professional</li>
+                    <li>From gaming roots to groundbreaking ideas</li>
+                    <li>SirSluginston cultivates ventures meant to last</li>
+                    <li>Let our trail shape your path</li>
+                </ul>
+                <p>
+                    Whimsical, yet efficient. Playful, yet professional. That’s the SirSluginston way.
+                </p>
+            </div>
+        </div>
+    </div>
+    <!-- SharedUI Footer: the end, but also the beginning -->
+        <div id="footer-container"></div>
+    </div>
+                <!-- SharedUI JS: theme toggle, header, navbar, account injection -->
+                <script src="SharedUI/sharedui.js"></script>
+                    <script src="Hero/hero.js"></script>
+                    <script>
+                        document.addEventListener('DOMContentLoaded', async function() {
+                            // Load config and inject hero
+                            const projects = await window.SharedUILib.getProjects();
+                            // Select config by ?project=slug or by matching this page in pages[].href
+                            const params = new URLSearchParams(window.location.search);
+                            const slug = params.get('project');
+                            let config = projects[0];
+                            if (slug) {
+                                const bySlug = projects.find(p => p.slug === slug);
+                                if (bySlug) config = bySlug;
+                            } else {
+                                // Try to match by pages[].href
+                                const pageHref = window.location.pathname.split('/').pop() || 'About SirSluginston Co.html';
+                                const byPage = projects.find(p => Array.isArray(p.pages) && p.pages.some(pg => pg.href && pg.href.toLowerCase() === pageHref.toLowerCase()));
+                                if (byPage) config = byPage;
+                            }
+                            window.SharedUIConfig = config;
+                            // Find the page config for this page
+                            const pageConfig = (config.pages || []).find(p => p.href && p.href.toLowerCase() === 'about sirsluginston co.html');
+                            const title = (pageConfig && pageConfig.pageTitle) || 'About SirSluginston Co';
+                            const tagline = (pageConfig && pageConfig.pageTagline) || '';
+                            SharedUIHero.inject(document.getElementById('shared-hero-container'), title, tagline);
+                        });
+                    </script>
+                <script>
+                    (async function() {
+                        const { getProjects, injectHeader, injectFooter, applyBranding } = window.SharedUILib;
+                        // Modular: select config by slug from URL, fallback to first project
+                        const params = new URLSearchParams(window.location.search);
+                        const slug = params.get('project');
+                        const projects = await getProjects();
+                        let config = projects[0];
+                        if (slug) {
+                            const bySlug = projects.find(p => p.slug === slug);
+                            if (bySlug) config = bySlug;
+                        }
+                        window.SharedUIConfig = config;
+                        applyBranding(config);
+                        injectHeader(config);
+                        injectFooter(config);
+                        // Set body content from config
+                        var bodyTaglineEl = document.getElementById('shared-body-tagline');
+                        var pageHref = window.location.pathname.split('/').pop() || 'About SirSluginston Co.html';
+                        var pageConfig = (config.pages || []).find(p => p.href && p.href.toLowerCase() === pageHref.toLowerCase());
+                        if (bodyTaglineEl && pageConfig && pageConfig.pageTagline) bodyTaglineEl.textContent = pageConfig.pageTagline;
+                        // Now load the navbar script so it can use SharedUIConfig
+                        var navbarScript = document.createElement('script');
+                        navbarScript.src = 'Navbar/navbar.js';
+                        navbarScript.onload = initDropdownsAfterNavbar;
+                        document.body.appendChild(navbarScript);
+                    })();
+                </script>
+<script src="ThemeToggle/theme-toggle.js"></script>
+<script src="Header/header.js"></script>
+<script src="Dropdown/dropdown.js"></script>
+<script src="Modals/modal.js"></script>
+<script>
+function initDropdownsAfterNavbar() {
+  if (window.SharedUIDropdown) SharedUIDropdown.initAll();
+  if (window.SharedUIModal) SharedUIModal.initAll();
+}
+</script>
+</body>
+</html>

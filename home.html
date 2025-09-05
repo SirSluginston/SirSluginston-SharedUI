@@ -1,0 +1,116 @@
+<!--
+  SharedUI Demo Home (was index.html)
+  - Modular, reusable, and future-proof (like a slug in a suit)
+  - All content and branding injected/configured via JS and projects.json
+  - If you break this, you owe SirSluginston a coffee
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+    // Insert ?project=sharedui in the URL if missing, without reloading
+    (function() {
+      var params = new URLSearchParams(window.location.search);
+      if (!params.has('project')) {
+        params.set('project', 'sharedui');
+        var newUrl = window.location.pathname + '?' + params.toString();
+        window.history.replaceState({}, '', newUrl);
+      }
+    })();
+    </script>
+  <!-- SharedUI core styles and config: don't touch unless you like chaos -->
+  <link rel="stylesheet" href="./SharedUI-border.css">
+  <!-- config.js is extinct. Long live projects.json. -->
+  <link rel="stylesheet" href="./variables.css">
+  <!-- The consuming project should define --color-secondary in their own CSS for custom branding. -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home | SirSluginston SharedUI</title>
+  <!-- SharedUI component styles: keep it snazzy -->
+  <link rel="stylesheet" href="./Header/header.css">
+  <link rel="stylesheet" href="./Navbar/navbar.css">
+  <link rel="stylesheet" href="./Body/body.css">
+  <link rel="stylesheet" href="./Footer/footer.css">
+  <link rel="stylesheet" href="./ThemeToggle/theme-toggle.css">
+  <link rel="stylesheet" href="Dropdown/dropdown.css">
+  <link rel="stylesheet" href="Modals/modal.css">
+  <link rel="stylesheet" href="Hero/hero.css">
+</head>
+<body>
+  <div class="sharedui-outer-border">
+    <!-- SharedUI Header: top hat required -->
+    <div id="header-container"></div>
+    <!-- SharedUI Navbar: navigation for the truly lost -->
+    <div id="site-navbar"></div>
+    <!-- SharedUI Hero: page title and tagline (full width) -->
+    <div id="shared-hero-container"></div>
+    <!-- SharedUI Body: where the magic (and content) happens -->
+    <div id="body-container">
+      <div class="shared-body">
+        <div class="body-content" id="shared-body-content"></div>
+      </div>
+    </div>
+    <!-- SharedUI Footer: the end, but also the beginning -->
+    <div id="footer-container"></div>
+    <footer class="shared-footer">
+      <p id="shared-footer-copyright"></p>
+      <div class="shared-footer-note"></div>
+      <p></p>
+    </footer>
+  </div>
+    <!-- SharedUI JS: theme toggle, header, navbar, dropdown, modal -->
+    <script src="SharedUI/sharedui.js"></script>
+    <script src="ThemeToggle/theme-toggle.js"></script>
+    <script src="Header/header.js"></script>
+  <script src="Dropdown/dropdown.js"></script>
+  <script src="Modals/modal.js"></script>
+  <script src="Hero/hero.js"></script>
+    <script>
+      function initDropdownsAfterNavbar() {
+        if (window.SharedUIDropdown) SharedUIDropdown.initAll();
+        if (window.SharedUIModal) SharedUIModal.initAll();
+      }
+      (async function() {
+        const { getProjects, injectHeader, injectFooter, applyBranding } = window.SharedUILib;
+        // Always use the SharedUI config (slug: 'sharedui')
+        const projects = await getProjects();
+  const config = projects.find(p => (p.slug && p.slug.toLowerCase() === 'sharedui')) || projects.find(p => (p.slug && p.slug.toLowerCase() === 'sharedui')) || projects[0];
+        window.SharedUIConfig = config;
+        applyBranding(config);
+        injectHeader(config);
+        injectFooter(config);
+        // Set body content from config
+        var heroContainer = document.getElementById('shared-hero-container');
+        var pageHref = window.location.pathname.split('/').pop() || 'home.html';
+        // Normalize to ensure .html extension is present for matching
+        var normPageHref = pageHref.endsWith('.html') ? pageHref.toLowerCase() : (pageHref + '.html').toLowerCase();
+        var pageConfig = (config.pages || []).find(p => {
+          if (!p.href) return false;
+          var normHref = p.href.toLowerCase();
+          return normHref === normPageHref || normHref.replace('.html','') === pageHref.toLowerCase().replace('.html','');
+        });
+        console.log('[SharedUI DEBUG] Hero injection:', {
+          config,
+          pageHref,
+          pageConfig,
+          heroContainer,
+          SharedUIHero: window.SharedUIHero
+        });
+        if (window.SharedUIHero && heroContainer && pageConfig) {
+          SharedUIHero.inject(heroContainer, pageConfig.pageTitle, pageConfig.pageTagline);
+        } else {
+          console.warn('[SharedUI DEBUG] Hero NOT injected:', {
+            hasSharedUIHero: !!window.SharedUIHero,
+            hasHeroContainer: !!heroContainer,
+            hasPageConfig: !!pageConfig
+          });
+        }
+        // Now load the navbar script so it can use SharedUIConfig
+        var navbarScript = document.createElement('script');
+        navbarScript.src = 'Navbar/navbar.js';
+        navbarScript.onload = initDropdownsAfterNavbar;
+        document.body.appendChild(navbarScript);
+      })();
+    </script>
+</body>
+</html>

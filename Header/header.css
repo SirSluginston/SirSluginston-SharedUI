@@ -1,0 +1,78 @@
+/* --- Header Styles (SharedUI) --- */
+
+/* Controls container for right-aligned header actions */
+.shared-header-controls {
+  display: flex;
+  align-items: center;
+  gap: 1.2em;
+  justify-content: flex-end;
+}
+
+/* Header title (brand font) */
+.shared-header-title {
+  font-family: var(--font-serif);
+  color: var(--color-secondary);
+  text-shadow: 0 1px 4px var(--color-accent);
+}
+
+html, body {
+  overflow-x: hidden;
+}
+
+/* Tagline styling */
+.shared-header-tagline {
+  font-family: var(--font-sans);
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--color-text);
+  margin-top: 0.2em;
+  text-shadow: 0 1px 4px var(--color-accent);
+}
+
+/* Main header container */
+header.shared-header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  background-color: var(--color-primary);
+  color: var(--color-bg);
+  padding: 0 1.5em;
+  border: 2px solid var(--color-secondary);
+  height: 128px;
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Logo link and image */
+.shared-header-logo-link {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  z-index: 1;
+}
+ .shared-header-logo {
+   height: 56px;
+   width: auto;
+   display: block;
+   border-radius: 8px;
+ }
+
+/* Header content (title/tagline) */
+.shared-header-content {
+  font-family: var(--font-sans);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  flex: 1 1 auto;
+}
+
+.shared-header-toggle-container {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+  z-index: 1;
+}

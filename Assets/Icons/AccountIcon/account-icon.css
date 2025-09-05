@@ -1,0 +1,25 @@
+/* --- Account Icon Styles (SharedUI) --- */
+
+.account-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.5em;
+  min-height: 2.5em;
+  width: 2.5em;
+  height: 2.5em;
+}
+
+.account-icon-svg {
+  width: 2.5em;
+  height: 2.5em;
+  display: block;
+  border-radius: 50%;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  cursor: pointer;
+  transition: box-shadow 0.2s;
+}
+
+.account-icon-svg:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.16);
+}

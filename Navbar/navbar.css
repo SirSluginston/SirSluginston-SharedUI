@@ -1,0 +1,65 @@
+/* SharedUI Dropdown compatibility: ensure About dropdown works */
+.sharedui-dropdown-content {
+  display: none;
+}
+.sharedui-dropdown.open > .sharedui-dropdown-content {
+  display: block;
+}
+
+
+/* --- Navbar Styles (SharedUI) --- */
+
+/* Light mode: dropdown background = secondary, text = bg/ivory for readability */
+:root[data-theme='light'] .navbar-dropdown {
+  background: var(--color-secondary);
+}
+:root[data-theme='light'] .navbar-dropdown a {
+  color: var(--color-bg);
+}
+:root[data-theme='light'] .navbar-dropdown a:hover {
+  color: var(--color-accent);
+  background: var(--color-secondary);
+}
+
+
+/* Main navbar container */
+.shared-navbar {
+  font-family: var(--font-sans);
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  background: var(--color-primary);
+  border: 2px solid var(--color-secondary);
+}
+
+/* Navbar list layout */
+.shared-navbar-list {
+  font-family: var(--font-sans);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Navbar list items */
+.shared-navbar-list li {
+  margin: 0 1.5em;
+}
+
+/* Navbar links */
+.shared-navbar-list a {
+  color: var(--color-text);
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 500;
+  transition: color 0.2s;
+  text-shadow: 0 1px 4px var(--color-accent);
+}
+
+/* Navbar link hover */
+.shared-navbar-list a:hover {
+  color: var(--color-accent);
+  text-shadow: 0 0 4px var(--color-secondary, #4B3A78, 0.2);
+}

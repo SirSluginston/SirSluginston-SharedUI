@@ -1,0 +1,36 @@
+/* SharedUI Modal Styles */
+:root {
+  --modal-bg: var(--color-bg, #fff);
+  --modal-border: var(--color-secondary, #4B3A78);
+  --modal-text: var(--color-text, #222);
+  --modal-shadow: 0 8px 32px #0003;
+}
+
+.sharedui-modal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.4);
+  align-items: center;
+  justify-content: center;
+}
+
+.sharedui-modal.open {
+  display: flex;
+}
+
+.sharedui-modal-content {
+  background: var(--modal-bg);
+  color: var(--modal-text);
+  border: 3px solid var(--modal-border);
+  border-radius: 1rem;
+  min-width: 320px;
+  max-width: 90vw;
+  padding: 2rem;
+  box-shadow: var(--modal-shadow);
+  position: relative;
+}

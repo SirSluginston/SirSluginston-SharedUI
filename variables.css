@@ -1,0 +1,27 @@
+
+/* --- SharedUI CSS Variables --- */
+
+/* Font families */
+:root {
+  --font-sans: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif;
+  --font-serif: 'Georgia', 'Times New Roman', Times, serif;
+  font-family: var(--font-sans);
+}
+
+/* Light mode color palette */
+:root[data-theme='light'] {
+  --color-primary: #D2691E;
+    --color-secondary: #4B3A78; /* Project can override */
+  --color-accent: #FFD700; /* Classic gold (bright, royal) */
+  --color-bg: #FFFFF0;
+  --color-text: #2F2F2F;
+}
+
+/* Dark mode color palette */
+:root[data-theme='dark'] {
+  --color-primary: #D2691E;
+    --color-secondary: #4B3A78; /* Project can override */
+  --color-accent: #FFD700; /* Classic gold (bright, royal) */
+  --color-bg: #2F2F2F;
+  --color-text: #FFFFF0;
+}

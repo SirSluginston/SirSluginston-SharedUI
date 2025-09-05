@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | SirSluginston SharedUI</title>
+  <style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #f7f7f7; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; }
+    .login-container { background: #fff; border-radius: 1rem; box-shadow: 0 4px 24px #0002; padding: 2.5rem 2rem; min-width: 320px; text-align: center; }
+    .login-title { font-size: 1.5rem; margin-bottom: 1.2rem; color: #4B3A78; }
+    .login-btn { background: #4B3A78; color: #fff; border: none; border-radius: 0.4rem; padding: 0.7rem 2.2rem; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-top: 1.5rem; transition: background 0.2s; }
+    .login-btn:hover { background: #D2691E; }
+    .login-note { color: #888; font-size: 0.95rem; margin-top: 1.2rem; }
+  </style>
+  <link rel="stylesheet" href="Dropdown/dropdown.css">
+  <link rel="stylesheet" href="Modals/modal.css">
+</head>
+<body>
+  <div class="login-container">
+    <div class="login-title">SirSluginston Co<br>SharedUI Demo</div>
+      <select id="projectSelector" style="margin-bottom:1rem; width:100%; padding:0.5rem; border-radius:0.3rem; font-size:1rem;">
+        <option value="SharedUI">SharedUI</option>
+        <option value="sirsluginston-co">SirSluginston Co</option>
+        <!-- Add more projects here as needed -->
+      </select>
+      <button class="login-btn" id="loginBtn">Login</button>
+    <div class="login-note">(This is a placeholder. In the future, this will be a real SSO login.)</div>
+  </div>
+  <script src="Dropdown/dropdown.js"></script>
+  <script src="Modals/modal.js"></script>
+  <script>
+      document.getElementById('loginBtn').onclick = function() {
+        // Simulate login by redirecting to selected project's home.html (absolute path for SSO)
+        var selector = document.getElementById('projectSelector');
+        var project = selector ? selector.value : 'SharedUI';
+        window.location.href = '/SirSluginston-SharedUI/home.html?project=' + encodeURIComponent(project);
+      };
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.SharedUIDropdown) SharedUIDropdown.initAll();
+      if (window.SharedUIModal) SharedUIModal.initAll();
+    });
+  </script>
+</body>
+</html>
