@@ -23,17 +23,62 @@
         <option value="sirsluginston-co">SirSluginston Co</option>
         <!-- Add more projects here as needed -->
       </select>
-      <button class="login-btn" id="loginBtn">Login</button>
+      <form id="loginForm" style="margin-bottom:1rem;">
+        <input type="email" id="loginEmail" placeholder="Email" required style="width:100%;margin-bottom:0.5rem;padding:0.5rem;" />
+        <input type="password" id="loginPassword" placeholder="Password" required style="width:100%;margin-bottom:0.5rem;padding:0.5rem;" />
+        <button class="login-btn" type="submit">Login</button>
+      </form>
+      <div id="loginMessage" style="color:#D2691E;font-weight:bold;"></div>
     <div class="login-note">(This is a placeholder. In the future, this will be a real SSO login.)</div>
   </div>
   <script src="Dropdown/dropdown.js"></script>
   <script src="Modals/modal.js"></script>
   <script>
-      document.getElementById('loginBtn').onclick = function() {
-        // Simulate login by redirecting to selected project's home.html (absolute path for SSO)
-        var selector = document.getElementById('projectSelector');
-        var project = selector ? selector.value : 'SharedUI';
-        window.location.href = '/SirSluginston-SharedUI/home.html?project=' + encodeURIComponent(project);
+      // Helper to get ssoLoginUrl from projects.json for selected project
+      async function getSsoLoginUrl(project) {
+        try {
+          const resp = await fetch('Projects/projects.json');
+          const projects = await resp.json();
+          const config = projects.find(p => p.slug && p.slug.toLowerCase() === project.toLowerCase());
+          return config && config.ssoLoginUrl ? config.ssoLoginUrl : null;
+        } catch (e) { return null; }
+      }
+
+      document.getElementById('loginForm').onsubmit = async function(e) {
+        e.preventDefault();
+        const selector = document.getElementById('projectSelector');
+        const project = selector ? selector.value : 'SharedUI';
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
+        const msg = document.getElementById('loginMessage');
+        msg.textContent = 'Logging in...';
+        const ssoUrl = await getSsoLoginUrl(project);
+        if (!ssoUrl) {
+          msg.textContent = 'SSO endpoint not found for this project.';
+          return;
+        }
+        try {
+          const resp = await fetch(ssoUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+          });
+          const data = await resp.json();
+          if (resp.ok && data.token) {
+            msg.textContent = 'Login successful! Redirecting...';
+            setTimeout(() => {
+              if (project === 'SharedUI') {
+                window.location.href = '/SirSluginston-SharedUI/home.html?project=' + encodeURIComponent(project);
+              } else if (project === 'sirsluginston-co') {
+                window.location.href = '/SirSluginston-SharedUI/home.html?project=' + encodeURIComponent(project);
+              }
+            }, 1000);
+          } else {
+            msg.textContent = 'Login failed: ' + (data.error || 'Invalid credentials.');
+          }
+        } catch (err) {
+          msg.textContent = 'Login error: ' + err;
+        }
       };
     document.addEventListener('DOMContentLoaded', function() {
       if (window.SharedUIDropdown) SharedUIDropdown.initAll();

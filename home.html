@@ -89,21 +89,11 @@
           var normHref = p.href.toLowerCase();
           return normHref === normPageHref || normHref.replace('.html','') === pageHref.toLowerCase().replace('.html','');
         });
-        console.log('[SharedUI DEBUG] Hero injection:', {
-          config,
-          pageHref,
-          pageConfig,
-          heroContainer,
-          SharedUIHero: window.SharedUIHero
-        });
+          // Removed debug log
         if (window.SharedUIHero && heroContainer && pageConfig) {
           SharedUIHero.inject(heroContainer, pageConfig.pageTitle, pageConfig.pageTagline);
         } else {
-          console.warn('[SharedUI DEBUG] Hero NOT injected:', {
-            hasSharedUIHero: !!window.SharedUIHero,
-            hasHeroContainer: !!heroContainer,
-            hasPageConfig: !!pageConfig
-          });
+            // Removed debug warning
         }
         // Now load the navbar script so it can use SharedUIConfig
         var navbarScript = document.createElement('script');

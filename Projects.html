@@ -208,8 +208,6 @@
               form.addEventListener('submit', (e) => {
                 e.preventDefault();
                 const data = Object.fromEntries(new FormData(form).entries());
-                console.log('New project data:', data);
-                alert('Project data logged to console. Backend integration coming soon!');
                 modalInstance.close();
                 form.reset();
               });

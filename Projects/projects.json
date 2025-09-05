@@ -1,7 +1,8 @@
 [
   {
-    "projectId": 0,
-    "{{slug}}": "sirsluginston-co",
+  "projectId": 0,
+  "ssoLoginUrl": "http://localhost:3000/login",
+  "{{slug}}": "sirsluginston-co",
     "slug": "sirsluginston-co",
     "projectTitle": "SirSluginston Co",
     "projectTagline": "Debonair Gastropod Genius",
@@ -69,6 +70,7 @@
   },
   {
   "projectId": 1,
+  "ssoLoginUrl": "http://localhost:3000/login",
   "{{slug}}": "SharedUI",
   "slug": "SharedUI",
     "projectTitle": "SharedUI",

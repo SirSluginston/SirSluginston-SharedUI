@@ -32,7 +32,7 @@ fetch('Navbar/navbar.html')
                 let baseHref = page.href;
                 let sep = baseHref.includes('?') ? '&' : '?';
                 dropA.href = baseHref + sep + 'project=' + encodeURIComponent(SharedUIConfig.slug);
-                console.log('[SharedUI DEBUG][Navbar] Set dropdown pageKey link:', dropA.href);
+                // ...
                 // If this is the about-project page, use 'About {projectTitle}'
                 if (page.key === 'about-project' && SharedUIConfig.projectTitle) {
                   dropA.textContent = 'About ' + SharedUIConfig.projectTitle;
@@ -53,7 +53,7 @@ fetch('Navbar/navbar.html')
               let baseHref2 = item.href;
               let sep2 = baseHref2 && baseHref2.includes('?') ? '&' : '?';
               dropA.href = baseHref2 + sep2 + 'project=' + encodeURIComponent(SharedUIConfig.slug);
-              console.log('[SharedUI DEBUG][Navbar] Set dropdown static link:', dropA.href);
+              // ...
               // If this is the About This Project link, use 'About {projectTitle}'
               if ((item.text && item.text.toLowerCase().includes('about this project')) && SharedUIConfig.projectTitle) {
                 dropA.textContent = 'About ' + SharedUIConfig.projectTitle;
@@ -75,7 +75,7 @@ fetch('Navbar/navbar.html')
               let baseHref3 = page.href;
               let sep3 = baseHref3.includes('?') ? '&' : '?';
               a.href = baseHref3 + sep3 + 'project=' + encodeURIComponent(SharedUIConfig.slug);
-              console.log('[SharedUI DEBUG][Navbar] Set navbar pageKey link:', a.href);
+              // ...
               a.textContent = page.pageTitle || page.key;
               // Force Home link to always use home.html in URL
               if (link.pageKey === 'home' && (page.href === 'index.html' || page.href === 'home.html')) {
@@ -93,7 +93,7 @@ fetch('Navbar/navbar.html')
             let baseHref4 = link.href;
             let sep4 = baseHref4 && baseHref4.includes('?') ? '&' : '?';
             a.href = baseHref4 + sep4 + 'project=' + encodeURIComponent(SharedUIConfig.slug);
-            console.log('[SharedUI DEBUG][Navbar] Set navbar static link:', a.href);
+            // ...
             a.textContent = link.text;
           }
           li.appendChild(a);
