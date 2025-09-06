@@ -25,7 +25,7 @@ async function getProjects() {
  * @param {Object} config - Project config object
  */
 function injectHeader(config) {
-  fetch('SharedUI/Header/header.html').then(r => r.text()).then(html => {
+  fetch('/SirSluginston-SharedUI/SharedUI/Header/header.html').then(r => r.text()).then(html => {
     document.getElementById('header-container').innerHTML = html;
     var logoEl = document.querySelector('.shared-header-logo');
     if (logoEl && config.projectLogoUrl) logoEl.src = config.projectLogoUrl;
@@ -36,14 +36,14 @@ function injectHeader(config) {
     // Inject account icon after header is present
   // Inject account icon SVG from SharedUI/Assets/Icons/AccountIcon, styled
     // Ensure CSS is loaded
-  var iconCss = document.querySelector('link[href="SharedUI/Assets/Icons/AccountIcon/account-icon.css"]');
+  var iconCss = document.querySelector('link[href="/SirSluginston-SharedUI/SharedUI/Assets/Icons/AccountIcon/account-icon.css"]');
     if (!iconCss) {
       var link = document.createElement('link');
       link.rel = 'stylesheet';
-  link.href = 'SharedUI/Assets/Icons/AccountIcon/account-icon.css';
+      link.href = '/SirSluginston-SharedUI/SharedUI/Assets/Icons/AccountIcon/account-icon.css';
       document.head.appendChild(link);
     }
-  fetch('SharedUI/Assets/Icons/AccountIcon/account-icon.svg')
+  fetch('/SirSluginston-SharedUI/SharedUI/Assets/Icons/AccountIcon/account-icon.svg')
       .then(response => response.ok ? response.text() : '')
       .then(svg => {
         var container = document.getElementById('account-inject');
@@ -56,7 +56,7 @@ function injectHeader(config) {
             icon.title = 'Account Settings';
             icon.onclick = function(e) {
               e.preventDefault();
-              window.location.href = 'SharedUI/Account/account.html';
+              window.location.href = '/SirSluginston-SharedUI/SharedUI/Account/account.html';
             };
           }
         }
@@ -71,7 +71,7 @@ function injectHeader(config) {
  * @param {Object} config - Project config object
  */
 function injectFooter(config) {
-  fetch('SharedUI/Footer/footer.html').then(r => r.text()).then(html => {
+  fetch('/SirSluginston-SharedUI/SharedUI/Footer/footer.html').then(r => r.text()).then(html => {
     var temp = document.createElement('div');
     temp.innerHTML = html;
     var p = temp.querySelector('p');

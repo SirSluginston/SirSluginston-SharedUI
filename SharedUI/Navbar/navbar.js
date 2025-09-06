@@ -1,7 +1,7 @@
 // === SharedUI Navbar Injection ===
 // Loads navbar HTML and populates links (with dropdowns) from SharedUIConfig (fetched from https://www.sirsluginston.com/projects.json).
 // Modular, dynamic, and ready for your next 17 projects.
-fetch('SharedUI/Navbar/navbar.html')
+fetch('/SirSluginston-SharedUI/SharedUI/Navbar/navbar.html')
   .then(response => response.text())
   .then(html => {
     document.getElementById('site-navbar').innerHTML = html;

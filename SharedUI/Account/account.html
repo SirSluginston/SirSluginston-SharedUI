@@ -1,143 +1,38 @@
 <!--
-        SharedUI Account Page
-        - Modular, reusable, and future-proof (like a slug in a suit)
-        - All content and branding injected/configured via JS and projects.json
-        - User can change global and project-specific settings here
--->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-        <!-- SharedUI core styles and config -->
-        <link rel="stylesheet" href="../SharedUI-border.css">
-        <link rel="stylesheet" href="../variables.css">
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Account Settings</title>
-        <!-- SharedUI component styles -->
-        <link rel="stylesheet" href="../Header/header.css">
-        <link rel="stylesheet" href="../Navbar/navbar.css">
-        <link rel="stylesheet" href="../Body/body.css">
-        <link rel="stylesheet" href="../Footer/footer.css">
-        <link rel="stylesheet" href="../ThemeToggle/theme-toggle.css">
-        <link rel="stylesheet" href="../Hero/hero.css">
-        <link rel="stylesheet" href="account.css">
-        <script src="../sharedui.js"></script>
-        <script src="account.js"></script>
-        <script src="../ThemeToggle/theme-toggle.js"></script>
-        <script src="../Header/header.js"></script>
-        <script src="../Hero/hero.js"></script>
-</head>
-<body>
-        <div class="sharedui-outer-border">
-                <div id="header-container"></div>
-                <div id="site-navbar"></div>
-                <!-- SharedUI Hero -->
-                <div id="shared-hero-container"></div>
-                <div id="body-container">
-                        <div class="shared-body">
-                                <div class="body-content" id="shared-body-content">
-                                        <h3>Global Settings</h3>
-                                        <form id="global-settings-form">
-                                                <label>Display Name:<br>
-                                                        <input type="text" name="displayName" placeholder="Your name">
-                                                </label><br><br>
-                                                <label>Theme:<br>
-                                                        <select name="theme">
-                                                                <option value="light">Light</option>
-                                                                <option value="dark">Dark</option>
-                                                        </select>
-                                                </label><br><br>
-                                                <button type="submit">Save Global Settings</button>
-                                        </form>
-                                        <hr>
-                                        <h3>Project-Specific Settings</h3>
-                                        <form id="project-settings-form">
-                                                <label>Preferred Project:<br>
-                                                        <select name="preferredProject" id="preferredProjectSelect"></select>
-                                                </label><br><br>
-                                                <button type="submit">Save Project Settings</button>
-                                        </form>
-                                </div>
-                        </div>
-                </div>
-                <div id="footer-container"></div>
-        </div>
-        <script>
-            function initDropdownsAfterNavbar() {
-                if (window.SharedUIDropdown) SharedUIDropdown.initAll();
-                if (window.SharedUIModal) SharedUIModal.initAll();
-            }
-            (async function() {
-                const { getProjects, injectHeader, injectFooter, applyBranding } = window.SharedUILib;
-                const projects = await getProjects();
-                const config = projects.find(p => (p.slug && p.slug.toLowerCase() === 'sharedui')) || projects[0];
-                window.SharedUIConfig = config;
-                applyBranding(config);
-                injectHeader(config);
-                injectFooter(config);
-                var heroContainer = document.getElementById('shared-hero-container');
-                var pageHref = window.location.pathname.split('/').pop() || 'account.html';
-                var normPageHref = pageHref.endsWith('.html') ? pageHref.toLowerCase() : (pageHref + '.html').toLowerCase();
-                var pageConfig = (config.pages || []).find(p => {
-                    if (!p.href) return false;
-                    var normHref = p.href.toLowerCase();
-                    return normHref === normPageHref || normHref.replace('.html','') === pageHref.toLowerCase().replace('.html','');
-                });
-                if (window.SharedUIHero && heroContainer && pageConfig) {
-                    SharedUIHero.inject(heroContainer, pageConfig.pageTitle, pageConfig.pageTagline);
-                }
-                var navbarScript = document.createElement('script');
-                navbarScript.src = '../Navbar/navbar.js';
-                navbarScript.onload = initDropdownsAfterNavbar;
-                document.body.appendChild(navbarScript);
-                // Populate project select
-                const select = document.getElementById('preferredProjectSelect');
-                if (select && Array.isArray(projects)) {
-                    projects.forEach(p => {
-                        const opt = document.createElement('option');
-                        opt.value = p.siteUrl || '';
-                        opt.textContent = p.projectTitle || p.siteUrl || 'Untitled';
-                        select.appendChild(opt);
-                    });
-                }
-            })();
-        </script>
-</body>
-</html>
-<!--
     SharedUI Account Page
     - Modular, reusable, and future-proof (like a slug in a suit)
     - All content and branding injected/configured via JS and projects.json
-    - User can change global and project-specific settings here
 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- SharedUI core styles and config -->
-    <link rel="stylesheet" href="../SharedUI-border.css">
-    <link rel="stylesheet" href="../variables.css">
+    <!-- SharedUI core styles and config: don't touch unless you like chaos -->
+    <link rel="stylesheet" href="/SirSluginston-SharedUI/SharedUI-border.css">
+    <link rel="stylesheet" href="/SirSluginston-SharedUI/variables.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account Settings</title>
-    <!-- SharedUI component styles -->
-    <link rel="stylesheet" href="../SharedUI/Header/header.css">
-    <link rel="stylesheet" href="../SharedUI/Navbar/navbar.css">
-    <link rel="stylesheet" href="../SharedUI/Body/body.css">
-    <link rel="stylesheet" href="../SharedUI/Footer/footer.css">
-    <link rel="stylesheet" href="../SharedUI/ThemeToggle/theme-toggle.css">
-    <link rel="stylesheet" href="../SharedUI/Hero/hero.css">
+    <title>Account | SirSluginston SharedUI</title>
+    <!-- SharedUI component styles: keep it snazzy -->
+    <link rel="stylesheet" href="/SirSluginston-SharedUI/SharedUI/Header/header.css">
+    <link rel="stylesheet" href="/SirSluginston-SharedUI/SharedUI/Navbar/navbar.css">
+    <link rel="stylesheet" href="/SirSluginston-SharedUI/SharedUI/Body/body.css">
+    <link rel="stylesheet" href="/SirSluginston-SharedUI/SharedUI/Footer/footer.css">
+    <link rel="stylesheet" href="/SirSluginston-SharedUI/SharedUI/ThemeToggle/theme-toggle.css">
+    <link rel="stylesheet" href="/SirSluginston-SharedUI/SharedUI/Dropdown/dropdown.css">
+    <link rel="stylesheet" href="/SirSluginston-SharedUI/SharedUI/Modals/modal.css">
+    <link rel="stylesheet" href="/SirSluginston-SharedUI/SharedUI/Hero/hero.css">
+    <link rel="stylesheet" href="/SirSluginston-SharedUI/SharedUI/Assets/Icons/AccountIcon/account-icon.css">
     <link rel="stylesheet" href="account.css">
-    <script src="../SharedUI/sharedui.js"></script>
-    <script src="account.js"></script>
-    <script src="../SharedUI/ThemeToggle/theme-toggle.js"></script>
-    <script src="../SharedUI/Header/header.js"></script>
 </head>
 <body>
     <div class="sharedui-outer-border">
+        <!-- SharedUI Header: top hat required -->
         <div id="header-container"></div>
+        <!-- SharedUI Navbar: navigation for the truly lost -->
         <div id="site-navbar"></div>
-        <!-- SharedUI Hero -->
+        <!-- SharedUI Hero: page title and tagline (full width) -->
         <div id="shared-hero-container"></div>
+        <!-- SharedUI Body: where the magic (and content) happens -->
         <div id="body-container">
             <div class="shared-body">
                 <div class="body-content" id="shared-body-content">
@@ -165,39 +60,71 @@
                 </div>
             </div>
         </div>
+        <!-- SharedUI Footer: the end, but also the beginning -->
         <div id="footer-container"></div>
+        <footer class="shared-footer">
+            <p id="shared-footer-copyright"></p>
+            <div class="shared-footer-note"></div>
+            <p></p>
+        </footer>
     </div>
-    <script src="../SharedUI/Hero/hero.js"></script>
+    <!-- SharedUI JS: theme toggle, header, navbar, dropdown, modal -->
+    <script src="/SirSluginston-SharedUI/SharedUI/sharedui.js"></script>
+    <script src="/SirSluginston-SharedUI/SharedUI/ThemeToggle/theme-toggle.js"></script>
+    <script src="/SirSluginston-SharedUI/SharedUI/Header/header.js"></script>
+    <script src="/SirSluginston-SharedUI/SharedUI/Dropdown/dropdown.js"></script>
+    <script src="/SirSluginston-SharedUI/SharedUI/Modals/modal.js"></script>
+    <script src="/SirSluginston-SharedUI/SharedUI/Hero/hero.js"></script>
+    <script src="account.js"></script>
     <script>
-    document.addEventListener('DOMContentLoaded', async function() {
-        const { loadConfig, injectHeader, injectFooter, applyBranding, getProjects } = window.SharedUILib;
-    const path = 'SharedUI/Account/account.html'; // project=SharedUI enforced elsewhere
-        const config = await loadConfig(path);
-        window.SharedUIConfig = config;
-        applyBranding(config);
-        injectHeader(config);
-        injectFooter(config);
-        // Set hero content from config
-    const pageConfig = (config.pages || []).find(p => p.href && p.href.toLowerCase() === 'sharedui/account/account.html');
-        const title = (pageConfig && pageConfig.pageTitle) || 'Account Settings';
-        const tagline = (pageConfig && pageConfig.pageTagline) || 'Manage your profile and preferences.';
-        SharedUIHero.inject(document.getElementById('shared-hero-container'), title, tagline);
-        // Now load the navbar script so it can use SharedUIConfig
-        var navbarScript = document.createElement('script');
-    navbarScript.src = '../SharedUI/Navbar/navbar.js';
-        document.body.appendChild(navbarScript);
-        // Populate project select
-        const projects = await getProjects();
-        const select = document.getElementById('preferredProjectSelect');
-        if (select && Array.isArray(projects)) {
-            projects.forEach(p => {
-                const opt = document.createElement('option');
-                opt.value = p.siteUrl || '';
-                opt.textContent = p.projectTitle || p.siteUrl || 'Untitled';
-                select.appendChild(opt);
-            });
+        function initDropdownsAfterNavbar() {
+            if (window.SharedUIDropdown) SharedUIDropdown.initAll();
+            if (window.SharedUIModal) SharedUIModal.initAll();
         }
-    });
+        (async function() {
+            const { getProjects, injectHeader, injectFooter, applyBranding } = window.SharedUILib;
+            // Always use the SharedUI config (slug: 'sharedui')
+            const projects = await getProjects();
+            const config = projects.find(p => (p.slug && p.slug.toLowerCase() === 'sharedui')) || projects[0];
+            window.SharedUIConfig = config;
+            applyBranding(config);
+            injectHeader(config);
+            injectFooter(config);
+            // Set hero content from config
+            var heroContainer = document.getElementById('shared-hero-container');
+            var pageHref = window.location.pathname.split('/').pop() || 'account.html';
+            // Normalize to ensure .html extension is present for matching
+            var normPageHref = pageHref.endsWith('.html') ? pageHref.toLowerCase() : (pageHref + '.html').toLowerCase();
+            var pageConfig = (config.pages || []).find(p => {
+                if (!p.href) return false;
+                var normHref = p.href.toLowerCase();
+                return normHref === normPageHref || normHref.replace('.html','') === pageHref.toLowerCase().replace('.html','');
+            });
+            if (window.SharedUIHero && heroContainer && pageConfig) {
+                SharedUIHero.inject(heroContainer, pageConfig.pageTitle, pageConfig.pageTagline);
+            }
+            // Now load the navbar script so it can use SharedUIConfig
+            var navbarScript = document.createElement('script');
+            navbarScript.src = '/SirSluginston-SharedUI/SharedUI/Navbar/navbar.js';
+            navbarScript.onload = initDropdownsAfterNavbar;
+            document.body.appendChild(navbarScript);
+            // Populate project select
+            const select = document.getElementById('preferredProjectSelect');
+            if (select && Array.isArray(projects)) {
+                projects.forEach(p => {
+                    const opt = document.createElement('option');
+                    opt.value = p.siteUrl || '';
+                    opt.textContent = p.projectTitle || p.siteUrl || 'Untitled';
+                    select.appendChild(opt);
+                });
+            }
+            // Fix account icon SVG path if needed
+            const iconLinks = document.querySelectorAll('link[rel="stylesheet"][href*="account-icon.css"]');
+            iconLinks.forEach(link => {
+                // If the CSS references the SVG, ensure the path is correct
+                // (Assumes the CSS uses a relative path to the SVG)
+            });
+        })();
     </script>
 </body>
 </html>
