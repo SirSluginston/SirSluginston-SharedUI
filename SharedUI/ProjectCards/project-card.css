@@ -1,0 +1,35 @@
+/* SharedUI Project Card Styles */
+.project-card {
+  background: var(--color-bg);
+  border: 2px solid var(--color-secondary);
+  border-radius: 1rem;
+  box-shadow: 0 2px 12px 0 rgba(0,0,0,0.07);
+  padding: 1.5rem 1rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: box-shadow 0.2s;
+}
+.project-card:hover {
+  box-shadow: 0 4px 24px 0 var(--color-accent);
+}
+.project-logo {
+  display: block;
+  margin: 0 auto 1rem auto;
+  max-width: 80px;
+  max-height: 80px;
+  border-radius: 0.7rem;
+  background: #fff;
+  border: 2px solid var(--color-secondary);
+  object-fit: contain;
+}
+.project-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+.project-tagline {
+  font-size: 1rem;
+  color: var(--color-text-secondary, #666);
+}

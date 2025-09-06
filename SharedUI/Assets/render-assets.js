@@ -4,7 +4,7 @@ async function renderAssets() {
   const grid = document.querySelector('.mascot-elements-grid');
   let assets = [];
   try {
-    const resp = await fetch('Assets/assets.json');
+  const resp = await fetch('SharedUI/Assets/assets.json');
     if (resp.ok) {
       assets = await resp.json();
     }
@@ -17,7 +17,7 @@ async function renderAssets() {
       {
         title: 'SirSluginston_Logo_Original.JPG',
         type: 'image',
-        url: 'Assets/Images/SirSluginston_Logo_Original.JPG',
+  url: 'SharedUI/Assets/Images/SirSluginston_Logo_Original.JPG',
         description: 'Original SirSluginston logo in JPG format.'
       }
     ];

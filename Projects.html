@@ -26,19 +26,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projects | SirSluginston Co</title>
     <!-- SharedUI component styles: keep it snazzy -->
-    <link rel="stylesheet" href="Header/header.css">
-    <link rel="stylesheet" href="Navbar/navbar.css">
-    <link rel="stylesheet" href="Body/body.css">
-    <link rel="stylesheet" href="Footer/footer.css">
-    <link rel="stylesheet" href="ThemeToggle/theme-toggle.css">
-    <link rel="stylesheet" href="Dropdown/dropdown.css">
-    <link rel="stylesheet" href="Modals/modal.css">
-  <link rel="stylesheet" href="Hero/hero.css">
+  <link rel="stylesheet" href="SharedUI/Header/header.css">
+  <link rel="stylesheet" href="SharedUI/Navbar/navbar.css">
+  <link rel="stylesheet" href="SharedUI/Body/body.css">
+  <link rel="stylesheet" href="SharedUI/Footer/footer.css">
+  <link rel="stylesheet" href="SharedUI/ThemeToggle/theme-toggle.css">
+  <link rel="stylesheet" href="SharedUI/Dropdown/dropdown.css">
+  <link rel="stylesheet" href="SharedUI/Modals/modal.css">
+  <link rel="stylesheet" href="SharedUI/Hero/hero.css">
+  <link rel="stylesheet" href="SharedUI/ProjectCards/project-card.css">
 </head>
 <body>
-    <script src="ThemeToggle/theme-toggle.js"></script>
-</head>
-<body>
+  <!-- SharedUI JS: theme toggle, header, navbar, dropdown, modal -->
+  <script src="SharedUI/sharedui.js"></script>
+  <script src="SharedUI/ThemeToggle/theme-toggle.js"></script>
+  <script src="SharedUI/Header/header.js"></script>
+  <script src="SharedUI/Dropdown/dropdown.js"></script>
+  <script src="SharedUI/Modals/modal.js"></script>
+  <script src="SharedUI/Hero/hero.js"></script>
+  <script src="SharedUI/ProjectCards/project-card.js"></script>
     <div class="sharedui-outer-border">
     <!-- SharedUI Header: top hat required -->
         <div id="header-container"></div>
@@ -49,170 +55,52 @@
     <!-- SharedUI Body: where the magic (and projects) happen -->
         <div id="body-container">
             <div class="shared-body">
-                <div class="body-content">
-                    <div style="display:flex;justify-content:flex-end;margin-bottom:1.5rem;">
-                        <button id="new-project-btn" title="Start a new project">+ Start New Project</button>
-                    </div>
-                    <!-- New Project Modal (SharedUI) -->
-                    <div id="new-project-modal" class="sharedui-modal">
-                        <div class="sharedui-modal-content">
-                            <button id="close-new-project-modal" class="sharedui-modal-close" style="position:absolute;top:0.5rem;right:0.5rem;font-size:1.5rem;background:none;border:none;color:var(--color-text);cursor:pointer;">&times;</button>
-                            <h3 style="margin-top:0">Create New Project</h3>
-                            <form id="new-project-form" autocomplete="off">
-                                <label style="display:block;margin-bottom:0.5rem;">Title:<br>
-                                    <input name="title" required style="width:100%;padding:0.5rem;margin-top:0.2rem;border:1px solid var(--color-secondary);border-radius:0.3rem;">
-                                </label>
-                                <label style="display:block;margin-bottom:0.5rem;">Tagline:<br>
-                                    <input name="tagline" required style="width:100%;padding:0.5rem;margin-top:0.2rem;border:1px solid var(--color-secondary);border-radius:0.3rem;">
-                                </label>
-                                <label style="display:block;margin-bottom:0.5rem;">Secondary Color:<br>
-                                    <input name="secondaryColor" type="color" value="#4B3A78" style="width:3rem;height:2rem;padding:0.1rem;margin-top:0.2rem;border:1px solid var(--color-secondary);border-radius:0.3rem;vertical-align:middle;">
-                                </label>
-                                <label style="display:block;margin-bottom:0.5rem;">Logo URL:<br>
-                                    <input name="logoUrl" id="new-project-logo-url" style="width:100%;padding:0.5rem;margin-top:0.2rem;border:1px solid var(--color-secondary);border-radius:0.3rem;">
-                                </label>
-                                <label style="display:block;margin-bottom:0.5rem;">Description:<br>
-                                    <textarea name="description" rows="2" style="width:100%;padding:0.5rem;margin-top:0.2rem;border:1px solid var(--color-secondary);border-radius:0.3rem;"></textarea>
-                                </label>
-                                <div style="text-align:right;margin-top:1.5rem;">
-                                    <button type="submit" style="background:var(--color-secondary);color:var(--color-bg);padding:0.5rem 1.5rem;border:none;border-radius:0.3rem;font-weight:bold;cursor:pointer;">Create</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="projects-grid">
-                            <!-- Project cards will be injected here by JS -->
-                        
-                    </div>
-                </div>
+                <div class="body-content" id="shared-body-content"></div>
             </div>
         </div>
-    <!-- SharedUI Footer: the end, but also the beginning -->
-                <div id="footer-container"></div>
-        </div>
-    <script src="Header/header.js"></script>
-    <script src="SharedUI/sharedui.js"></script>
-    <script src="Dropdown/dropdown.js"></script>
-    <script src="Modals/modal.js"></script>
-  <script src="Hero/hero.js"></script>
+        <!-- SharedUI Footer: the end, but also the beginning -->
+        <div id="footer-container"></div>
+    </div>
     <script>
-        (async function() {
-            const { loadConfig, injectHeader, injectFooter, applyBranding, getProjects } = window.SharedUILib;
-            // Debug: Start
-            console.log('[SharedUI DEBUG] Projects page script loaded');
-            const projects = await getProjects();
-            console.log('[SharedUI DEBUG] Loaded projects:', projects);
-            const config = projects.find(p => (p.slug && p.slug.toLowerCase() === 'sharedui')) || projects.find(p => (p.slug && p.slug.toLowerCase() === 'sharedui')) || projects[0];
-            console.log('[SharedUI DEBUG] Using config:', config);
-            window.SharedUIConfig = config;
-            applyBranding(config);
-            injectHeader(config);
-            injectFooter(config);
-            // Set hero content from config
-            var heroContainer = document.getElementById('shared-hero-container');
-            console.log('[SharedUI DEBUG] Hero container:', heroContainer);
-            var pageHref = window.location.pathname.split('/').pop() || 'Projects.html';
-            // Normalize: add .html if missing
-            if (!/\.html$/i.test(pageHref)) pageHref += '.html';
-            console.log('[SharedUI DEBUG] pageHref (normalized):', pageHref);
-            var pageConfig = (config.pages || []).find(p => p.href && p.href.toLowerCase() === pageHref.toLowerCase());
-            console.log('[SharedUI DEBUG] pageConfig:', pageConfig);
-            if (window.SharedUIHero && heroContainer && pageConfig) {
-              console.log('[SharedUI DEBUG] Injecting hero:', pageConfig.pageTitle, pageConfig.pageTagline);
-              SharedUIHero.inject(heroContainer, pageConfig.pageTitle, pageConfig.pageTagline);
-            } else {
-              console.warn('[SharedUI DEBUG] Hero injection failed:', {
-                SharedUIHero: !!window.SharedUIHero,
-                heroContainer,
-                pageConfig
-              });
-            }
-            // Now load the navbar script so it can use SharedUIConfig (dynamic nav FTW)
-            var navbarScript = document.createElement('script');
-            navbarScript.src = 'Navbar/navbar.js';
-            navbarScript.onload = function() {
-              if (window.SharedUIDropdown) SharedUIDropdown.initAll();
-            };
-            document.body.appendChild(navbarScript);
-            // --- Dynamic project card rendering: the real MVP ---
-            function renderProjects() {
-              const grid = document.querySelector('.projects-grid');
-              let projectsArr = projects;
-              if (!Array.isArray(projectsArr) || projectsArr.length === 0) {
-                // fallback static cards: for the indecisive
-                projectsArr = [
-                  {
-                    title: 'SharedUI',
-                    tagline: 'Reusable modular UI for all SirSluginston projects.',
-                    logoUrl: 'https://placehold.co/80x80/EEE/222?text=Logo',
-                    siteUrl: '#'
-                  },
-                  {
-                    title: 'SlugGame',
-                    tagline: 'A whimsical game prototype that started it all.',
-                    logoUrl: 'https://placehold.co/80x80/EEE/222?text=Logo',
-                    siteUrl: '#'
-                  },
-                  {
-                    title: 'Future Project',
-                    tagline: 'More details coming soon...',
-                    logoUrl: 'https://placehold.co/80x80/EEE/222?text=Logo',
-                    siteUrl: '#'
-                  }
-                ];
-              }
-              grid.innerHTML = '';
-              for (const proj of projectsArr) {
-                const card = document.createElement('div');
-                card.className = 'project-card';
-                card.innerHTML = `
-                  <a href="${proj.siteUrl || '#'}" style="text-decoration:none;color:inherit;">
-                    <img src="${proj.projectLogoUrl || 'https://placehold.co/80x80/EEE/222?text=Logo'}" alt="Project Logo" class="project-logo">
-                    <div class="project-title">${proj.projectTitle || proj.title || ''}</div>
-                    <div class="project-tagline">${proj.projectTagline || proj.tagline || ''}</div>
-                  </a>
-                `;
-                grid.appendChild(card);
-              }
-            }
-            renderProjects();
-            // --- New Project Modal Logic: because who doesn't love a modal? ---
-            const newProjectBtn = document.getElementById('new-project-btn');
-            const modal = document.getElementById('new-project-modal');
-            const closeModalBtn = document.getElementById('close-new-project-modal');
-            const form = document.getElementById('new-project-form');
-            if (newProjectBtn && modal && closeModalBtn && form && window.SharedUIModal) {
-              // Set default logo URL to current project's logo if available
-              const logoInput = document.getElementById('new-project-logo-url');
-              const colorInput = form.elements['secondaryColor'];
-              const modalInstance = new SharedUIModal(modal);
-              newProjectBtn.addEventListener('click', () => {
-                if (window.SharedUIConfig && logoInput) {
-                  logoInput.value = window.SharedUIConfig.logoUrl || '';
-                }
-                modalInstance.open();
-              });
-              // When color is picked, focus the logo URL input
-              if (colorInput && logoInput) {
-                colorInput.addEventListener('input', () => {
-                  setTimeout(() => logoInput.focus(), 0);
-                });
-              }
-              closeModalBtn.addEventListener('click', () => {
-                modalInstance.close();
-              });
-              // Make clicking anywhere outside the modal content close it
-              modal.addEventListener('mousedown', (e) => {
-                if (e.target === modal) modalInstance.close();
-              });
-              form.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const data = Object.fromEntries(new FormData(form).entries());
-                modalInstance.close();
-                form.reset();
-              });
-            }
-        })();
+      function initDropdownsAfterNavbar() {
+        if (window.SharedUIDropdown) SharedUIDropdown.initAll();
+        if (window.SharedUIModal) SharedUIModal.initAll();
+      }
+      (async function() {
+        const { getProjects, injectHeader, injectFooter, applyBranding } = window.SharedUILib;
+        const projects = await getProjects();
+        const config = projects.find(p => (p.slug && p.slug.toLowerCase() === 'sharedui')) || projects[0];
+        window.SharedUIConfig = config;
+        applyBranding(config);
+        injectHeader(config);
+        injectFooter(config);
+        var heroContainer = document.getElementById('shared-hero-container');
+        var pageHref = window.location.pathname.split('/').pop() || 'Projects.html';
+        var normPageHref = pageHref.endsWith('.html') ? pageHref.toLowerCase() : (pageHref + '.html').toLowerCase();
+        var pageConfig = (config.pages || []).find(p => {
+          if (!p.href) return false;
+          var normHref = p.href.toLowerCase();
+          return normHref === normPageHref || normHref.replace('.html','') === pageHref.toLowerCase().replace('.html','');
+        });
+        if (window.SharedUIHero && heroContainer && pageConfig) {
+          SharedUIHero.inject(heroContainer, pageConfig.pageTitle, pageConfig.pageTagline);
+        }
+        var navbarScript = document.createElement('script');
+        navbarScript.src = 'SharedUI/Navbar/navbar.js';
+        navbarScript.onload = initDropdownsAfterNavbar;
+        document.body.appendChild(navbarScript);
+        // --- Dynamic project card rendering ---
+        const content = document.getElementById('shared-body-content');
+  let projectsArr = Array.isArray(projects) ? projects.filter(p => p.hasCard) : [];
+        // Create a grid container for cards
+        const grid = document.createElement('div');
+        grid.className = 'projects-grid';
+        for (const proj of projectsArr) {
+          if (window.SharedUIProjectCard && typeof window.SharedUIProjectCard.render === 'function') {
+            window.SharedUIProjectCard.render(grid, proj);
+          }
+        }
+        content.innerHTML = '';
+        content.appendChild(grid);
+      })();
     </script>
-</body>
-</html>

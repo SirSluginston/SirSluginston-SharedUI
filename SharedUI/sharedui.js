@@ -8,12 +8,13 @@
  * @returns {Promise<Array>} Array of project configs
  */
 async function getProjects() {
-  // Always use root-relative path so it works from any subdirectory
-  const base = window.location.pathname.split('/').slice(0, -1).join('/') || '';
-  let projectsPath = '/SirSluginston-SharedUI/Projects/projects.json';
-  // If running from file:// or unknown root, fallback to relative
-  if (window.location.protocol === 'file:' || !window.location.pathname.includes('SirSluginston-SharedUI')) {
-    projectsPath = '../Projects/projects.json';
+  let projectsPath = 'https://www.sirsluginston.com/projects.json';
+  // Use local config if running on localhost or 127.0.0.1
+  if (
+    window.location.hostname === 'localhost' ||
+    window.location.hostname === '127.0.0.1'
+  ) {
+    projectsPath = '/SirSluginston-SharedUI/SharedUI/Projects/projects.json';
   }
   const resp = await fetch(projectsPath);
   return resp.ok ? resp.json() : [];
@@ -24,7 +25,7 @@ async function getProjects() {
  * @param {Object} config - Project config object
  */
 function injectHeader(config) {
-  fetch('Header/header.html').then(r => r.text()).then(html => {
+  fetch('SharedUI/Header/header.html').then(r => r.text()).then(html => {
     document.getElementById('header-container').innerHTML = html;
     var logoEl = document.querySelector('.shared-header-logo');
     if (logoEl && config.projectLogoUrl) logoEl.src = config.projectLogoUrl;
@@ -33,16 +34,16 @@ function injectHeader(config) {
     var headerTaglineEl = document.querySelector('.shared-header-tagline');
     if (headerTaglineEl && config.projectTagline) headerTaglineEl.textContent = config.projectTagline;
     // Inject account icon after header is present
-    // Inject account icon SVG from Assets/Icons/AccountIcon, styled
+  // Inject account icon SVG from SharedUI/Assets/Icons/AccountIcon, styled
     // Ensure CSS is loaded
-    var iconCss = document.querySelector('link[href="Assets/Icons/AccountIcon/account-icon.css"]');
+  var iconCss = document.querySelector('link[href="SharedUI/Assets/Icons/AccountIcon/account-icon.css"]');
     if (!iconCss) {
       var link = document.createElement('link');
       link.rel = 'stylesheet';
-      link.href = 'Assets/Icons/AccountIcon/account-icon.css';
+  link.href = 'SharedUI/Assets/Icons/AccountIcon/account-icon.css';
       document.head.appendChild(link);
     }
-    fetch('Assets/Icons/AccountIcon/account-icon.svg')
+  fetch('SharedUI/Assets/Icons/AccountIcon/account-icon.svg')
       .then(response => response.ok ? response.text() : '')
       .then(svg => {
         var container = document.getElementById('account-inject');
@@ -55,7 +56,7 @@ function injectHeader(config) {
             icon.title = 'Account Settings';
             icon.onclick = function(e) {
               e.preventDefault();
-              window.location.href = 'Account/account.html';
+              window.location.href = 'SharedUI/Account/account.html';
             };
           }
         }
@@ -70,7 +71,7 @@ function injectHeader(config) {
  * @param {Object} config - Project config object
  */
 function injectFooter(config) {
-  fetch('Footer/footer.html').then(r => r.text()).then(html => {
+  fetch('SharedUI/Footer/footer.html').then(r => r.text()).then(html => {
     var temp = document.createElement('div');
     temp.innerHTML = html;
     var p = temp.querySelector('p');

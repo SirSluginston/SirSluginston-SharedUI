@@ -1,0 +1,20 @@
+{
+  "name": "sirsluginston-sharedui",
+  "version": "1.0.0",
+  "description": "Reusable interface components for consistent and modular user experiences across all SirSluginston projects.",
+  "main": "SharedUI/sharedui.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SirSluginston/SirSluginston-SharedUI.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SirSluginston/SirSluginston-SharedUI/issues"
+  },
+  "homepage": "https://github.com/SirSluginston/SirSluginston-SharedUI#readme"
+}

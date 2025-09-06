@@ -21,7 +21,7 @@
     .then(html => {
       container.innerHTML = html;
       const script = document.createElement('script');
-      script.src = 'SharedUI/ThemeToggle/theme-toggle.js';
+  script.src = 'SharedUI/ThemeToggle/theme-toggle.js';
       document.body.appendChild(script);
     });
 })();

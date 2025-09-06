@@ -1,7 +1,7 @@
 
-// Modular body injector: pulls title/tagline from SharedUIConfig (projects.json powered)
+// Modular body injector: pulls title/tagline from SharedUIConfig (fetched from https://www.sirsluginston.com/projects.json)
 // No more site-config.json. Welcome to the future.
-fetch('Body/body.html').then(r => r.text()).then(html => {
+fetch('SharedUI/Body/body.html').then(r => r.text()).then(html => {
   // Wait for SharedUIConfig to be available (injected by SharedUI)
   function injectBody() {
     if (!window.SharedUIConfig) {

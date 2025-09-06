@@ -27,14 +27,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home | SirSluginston SharedUI</title>
   <!-- SharedUI component styles: keep it snazzy -->
-  <link rel="stylesheet" href="./Header/header.css">
-  <link rel="stylesheet" href="./Navbar/navbar.css">
-  <link rel="stylesheet" href="./Body/body.css">
-  <link rel="stylesheet" href="./Footer/footer.css">
-  <link rel="stylesheet" href="./ThemeToggle/theme-toggle.css">
-  <link rel="stylesheet" href="Dropdown/dropdown.css">
-  <link rel="stylesheet" href="Modals/modal.css">
-  <link rel="stylesheet" href="Hero/hero.css">
+  <link rel="stylesheet" href="SharedUI/Header/header.css">
+  <link rel="stylesheet" href="SharedUI/Navbar/navbar.css">
+  <link rel="stylesheet" href="SharedUI/Body/body.css">
+  <link rel="stylesheet" href="SharedUI/Footer/footer.css">
+  <link rel="stylesheet" href="SharedUI/ThemeToggle/theme-toggle.css">
+  <link rel="stylesheet" href="SharedUI/Dropdown/dropdown.css">
+  <link rel="stylesheet" href="SharedUI/Modals/modal.css">
+  <link rel="stylesheet" href="SharedUI/Hero/hero.css">
 </head>
 <body>
   <div class="sharedui-outer-border">
@@ -59,12 +59,12 @@
     </footer>
   </div>
     <!-- SharedUI JS: theme toggle, header, navbar, dropdown, modal -->
-    <script src="SharedUI/sharedui.js"></script>
-    <script src="ThemeToggle/theme-toggle.js"></script>
-    <script src="Header/header.js"></script>
-  <script src="Dropdown/dropdown.js"></script>
-  <script src="Modals/modal.js"></script>
-  <script src="Hero/hero.js"></script>
+  <script src="SharedUI/sharedui.js"></script>
+  <script src="SharedUI/ThemeToggle/theme-toggle.js"></script>
+  <script src="SharedUI/Header/header.js"></script>
+  <script src="SharedUI/Dropdown/dropdown.js"></script>
+  <script src="SharedUI/Modals/modal.js"></script>
+  <script src="SharedUI/Hero/hero.js"></script>
     <script>
       function initDropdownsAfterNavbar() {
         if (window.SharedUIDropdown) SharedUIDropdown.initAll();
@@ -73,7 +73,7 @@
       (async function() {
         const { getProjects, injectHeader, injectFooter, applyBranding } = window.SharedUILib;
         // Always use the SharedUI config (slug: 'sharedui')
-        const projects = await getProjects();
+  const projects = await getProjects();
   const config = projects.find(p => (p.slug && p.slug.toLowerCase() === 'sharedui')) || projects.find(p => (p.slug && p.slug.toLowerCase() === 'sharedui')) || projects[0];
         window.SharedUIConfig = config;
         applyBranding(config);
@@ -96,10 +96,10 @@
             // Removed debug warning
         }
         // Now load the navbar script so it can use SharedUIConfig
-        var navbarScript = document.createElement('script');
-        navbarScript.src = 'Navbar/navbar.js';
-        navbarScript.onload = initDropdownsAfterNavbar;
-        document.body.appendChild(navbarScript);
+  var navbarScript = document.createElement('script');
+  navbarScript.src = 'SharedUI/Navbar/navbar.js';
+  navbarScript.onload = initDropdownsAfterNavbar;
+  document.body.appendChild(navbarScript);
       })();
     </script>
 </body>

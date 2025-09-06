@@ -37,7 +37,7 @@
       // Helper to get ssoLoginUrl from projects.json for selected project
       async function getSsoLoginUrl(project) {
         try {
-          const resp = await fetch('Projects/projects.json');
+          const resp = await fetch('https://www.sirsluginston.com/projects.json');
           const projects = await resp.json();
           const config = projects.find(p => p.slug && p.slug.toLowerCase() === project.toLowerCase());
           return config && config.ssoLoginUrl ? config.ssoLoginUrl : null;

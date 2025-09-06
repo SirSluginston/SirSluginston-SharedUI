@@ -8,15 +8,15 @@
 <html lang="en">
 <head>
         <script>
-    // Insert ?project=SharedUI in the URL if missing, without reloading
-        (function() {
-            var params = new URLSearchParams(window.location.search);
-            if (!params.has('project')) {
-                params.set('project', 'SharedUI');
-                var newUrl = window.location.pathname + '?' + params.toString();
-                window.history.replaceState({}, '', newUrl);
-            }
-        })();
+            // Insert ?project=sharedui in the URL if missing, without reloading
+            (function() {
+                var params = new URLSearchParams(window.location.search);
+                if (!params.has('project')) {
+                    params.set('project', 'sharedui');
+                    var newUrl = window.location.pathname + '?' + params.toString();
+                    window.history.replaceState({}, '', newUrl);
+                }
+            })();
         </script>
     <!-- SharedUI core styles and config: don't touch unless you like chaos -->
     <link rel="stylesheet" href="SharedUI-border.css">
@@ -26,65 +26,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About This Project</title>
     <!-- SharedUI component styles: keep it snazzy -->
-    <link rel="stylesheet" href="Header/header.css">
-    <link rel="stylesheet" href="Navbar/navbar.css">
-    <link rel="stylesheet" href="Body/body.css">
-    <link rel="stylesheet" href="Footer/footer.css">
-    <link rel="stylesheet" href="ThemeToggle/theme-toggle.css">
-    <link rel="stylesheet" href="Dropdown/dropdown.css">
-    <link rel="stylesheet" href="Modals/modal.css">
-    <link rel="stylesheet" href="Hero/hero.css">
+    <link rel="stylesheet" href="SharedUI/Header/header.css">
+    <link rel="stylesheet" href="SharedUI/Navbar/navbar.css">
+    <link rel="stylesheet" href="SharedUI/Body/body.css">
+    <link rel="stylesheet" href="SharedUI/Footer/footer.css">
+    <link rel="stylesheet" href="SharedUI/ThemeToggle/theme-toggle.css">
+    <link rel="stylesheet" href="SharedUI/Dropdown/dropdown.css">
+    <link rel="stylesheet" href="SharedUI/Modals/modal.css">
+    <link rel="stylesheet" href="SharedUI/Hero/hero.css">
     <script src="SharedUI/sharedui.js"></script>
-                        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            (async function() {
-                const { loadConfig, injectHeader, injectFooter, applyBranding } = window.SharedUILib;
-                const projects = await window.SharedUILib.getProjects();
-                // Prefer ?project=slug, else match by page href, else fallback
-                const params = new URLSearchParams(window.location.search);
-                const slug = params.get('project');
-                let config = projects[0];
-                if (slug) {
-                    const bySlug = projects.find(p => p.slug === slug);
-                    if (bySlug) config = bySlug;
-                } else {
-                    const pageHref = decodeURIComponent(window.location.pathname.split('/').pop() || 'About This Project.html').toLowerCase();
-                    const byPage = projects.find(p => Array.isArray(p.pages) && p.pages.some(pg => decodeURIComponent(pg.href || '').toLowerCase() === pageHref));
-                    if (byPage) config = byPage;
-                }
-                window.SharedUIConfig = config;
-                applyBranding(config);
-                injectHeader(config);
-                injectFooter(config);
-                var bodyTitleEl = document.getElementById('shared-body-title');
-                var pageHref = decodeURIComponent(window.location.pathname.split('/').pop() || 'About This Project.html').toLowerCase();
-                var pageConfig = (config.pages || []).find(p => decodeURIComponent(p.href || '').toLowerCase() === pageHref);
-                if (bodyTitleEl && pageConfig && pageConfig.pageTitle) {
-                    bodyTitleEl.textContent = pageConfig.pageTitle;
-                }
-                var bodyTaglineEl = document.getElementById('shared-body-tagline');
-                if (bodyTaglineEl && pageConfig && pageConfig.pageTagline) {
-                    bodyTaglineEl.textContent = pageConfig.pageTagline;
-                }
-                // Now load the navbar script so it can use SharedUIConfig
-                var navbarScript = document.createElement('script');
-                navbarScript.src = 'Navbar/navbar.js';
-                navbarScript.onload = initDropdownsAfterNavbar;
-                document.body.appendChild(navbarScript);
-            })();
-        });
-                        </script>
-<script src="ThemeToggle/theme-toggle.js"></script>
-<script src="Header/header.js"></script>
-<script src="Dropdown/dropdown.js"></script>
-<script src="Modals/modal.js"></script>
-<script>
-// Ensure dropdowns are initialized after navbar is injected
-function initDropdownsAfterNavbar() {
-  if (window.SharedUIDropdown) SharedUIDropdown.initAll();
-  if (window.SharedUIModal) SharedUIModal.initAll();
-}
-</script>
+    <script src="SharedUI/ThemeToggle/theme-toggle.js"></script>
+    <script src="SharedUI/Header/header.js"></script>
+    <script src="SharedUI/Dropdown/dropdown.js"></script>
+    <script src="SharedUI/Modals/modal.js"></script>
+    <script src="SharedUI/Hero/hero.js"></script>
 </head>
 <body>
     <div class="sharedui-outer-border">
@@ -113,27 +68,36 @@ function initDropdownsAfterNavbar() {
     <!-- SharedUI Footer: the end, but also the beginning -->
         <div id="footer-container"></div>
     </div>
-    <!-- SharedUI JS: theme toggle, header, navbar, account injection -->
-        </div>
         <!-- SharedUI JS: theme toggle, header, navbar, account injection -->
+        <script>
+            function initDropdownsAfterNavbar() {
+                if (window.SharedUIDropdown) SharedUIDropdown.initAll();
+                if (window.SharedUIModal) SharedUIModal.initAll();
+            }
+            (async function() {
+                const { getProjects, injectHeader, injectFooter, applyBranding } = window.SharedUILib;
+                const projects = await getProjects();
+                const config = projects.find(p => (p.slug && p.slug.toLowerCase() === 'sharedui')) || projects[0];
+                window.SharedUIConfig = config;
+                applyBranding(config);
+                injectHeader(config);
+                injectFooter(config);
+                var heroContainer = document.getElementById('shared-hero-container');
+                var pageHref = window.location.pathname.split('/').pop() || 'About This Project.html';
+                var normPageHref = pageHref.endsWith('.html') ? pageHref.toLowerCase() : (pageHref + '.html').toLowerCase();
+                var pageConfig = (config.pages || []).find(p => {
+                    if (!p.href) return false;
+                    var normHref = p.href.toLowerCase();
+                    return normHref === normPageHref || normHref.replace('.html','') === pageHref.toLowerCase().replace('.html','');
+                });
+                if (window.SharedUIHero && heroContainer && pageConfig) {
+                    SharedUIHero.inject(heroContainer, pageConfig.pageTitle, pageConfig.pageTagline);
+                }
+                var navbarScript = document.createElement('script');
+                navbarScript.src = 'SharedUI/Navbar/navbar.js';
+                navbarScript.onload = initDropdownsAfterNavbar;
+                document.body.appendChild(navbarScript);
+            })();
+        </script>
 </body>
-<script src="Hero/hero.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', async function() {
-        // Load config and inject hero
-        const projects = await window.SharedUILib.getProjects();
-        // Use the config for the current page (by slug or fallback)
-        // Try to get ?project=slug from URL, else fallback to 'sharedui' or first
-        const params = new URLSearchParams(window.location.search);
-        const slug = params.get('project') || 'sharedui';
-        const config = projects.find(p => p.slug === slug) || projects[0];
-        window.SharedUIConfig = config;
-        // Find the page config for this page
-        const pageConfig = (config.pages || []).find(p => p.href && p.href.toLowerCase() === 'about this project.html');
-        // Use the projectTitle for the hero title if available
-        const title = (config.projectTitle ? `About ${config.projectTitle}` : (pageConfig && pageConfig.pageTitle) || 'About This Project');
-        const tagline = (pageConfig && pageConfig.pageTagline) || '';
-        SharedUIHero.inject(document.getElementById('shared-hero-container'), title, tagline);
-    });
-</script>
 </html>
