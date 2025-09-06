@@ -10,11 +10,8 @@
     "type": "git",
     "url": "git+https://github.com/SirSluginston/SirSluginston-SharedUI.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/SirSluginston/SirSluginston-SharedUI/issues"
-  },
+  "keywords": ["ui"],
+  "author": "SirSluginston himself",
+  "license": "MIT",
   "homepage": "https://github.com/SirSluginston/SirSluginston-SharedUI#readme"
 }
