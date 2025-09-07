@@ -12,8 +12,8 @@
     .login-btn:hover { background: #D2691E; }
     .login-note { color: #888; font-size: 0.95rem; margin-top: 1.2rem; }
   </style>
-  <link rel="stylesheet" href="Dropdown/dropdown.css">
-  <link rel="stylesheet" href="Modals/modal.css">
+  <link rel="stylesheet" href="SharedUI/Dropdown/dropdown.css">
+  <link rel="stylesheet" href="SharedUI/Modals/modal.css">
 </head>
 <body>
   <div class="login-container">
@@ -75,7 +75,7 @@
           if (resp.ok && data.token) {
             msg.textContent = 'Login successful! Redirecting...';
             setTimeout(() => {
-              window.location.href = '/SirSluginston-SharedUI/home.html?project=' + encodeURIComponent(project);
+              window.location.href = '/home.html?project=' + encodeURIComponent(project);
             }, 1000);
           } else {
             msg.textContent = 'Login failed: ' + (data.error || 'Invalid credentials.');

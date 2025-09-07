@@ -8,10 +8,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SirSluginston/SirSluginston-SharedUI.git"
+    "url": "https://github.com/SirSluginston/SirSluginston-Co"
   },
   "keywords": ["ui"],
   "author": "SirSluginston himself",
   "license": "MIT",
-  "homepage": "https://github.com/SirSluginston/SirSluginston-SharedUI#readme"
+  "homepage": "https://github.com/SirSluginston/SirSluginston-Co#readme"
 }
