@@ -1,3 +1,4 @@
+console.log('[SharedUI] dropdown.js loaded', window.location.href, document.currentScript && document.currentScript.src);
 // SharedUI Dropdown Component
 class SharedUIDropdown {
   constructor(dropdownEl) {
@@ -64,4 +65,4 @@ class SharedUIDropdown {
     document.querySelectorAll('.sharedui-dropdown').forEach(el => new SharedUIDropdown(el));
   }
 }
-window.SharedUIDropdown = SharedUIDropdown;
+if (!window.SharedUIDropdown) window.SharedUIDropdown = SharedUIDropdown;

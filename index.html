@@ -31,17 +31,25 @@
       <div id="loginMessage" style="color:#D2691E;font-weight:bold;"></div>
     <div class="login-note">(This is a placeholder. In the future, this will be a real SSO login.)</div>
   </div>
-  <script src="Dropdown/dropdown.js"></script>
-  <script src="Modals/modal.js"></script>
+  <script src="config.js"></script>
   <script>
-      // Helper to get ssoLoginUrl from projects.json for selected project
+
+
+
       async function getSsoLoginUrl(project) {
         try {
-          const resp = await fetch('https://www.sirsluginston.com/projects.json');
-          const projects = await resp.json();
+          const resp = await fetch(`${window.API_URL}/projects`);
+          const data = await resp.json();
+          const projects = Array.isArray(data) ? data : data.projects || [];
+          console.log('Selected project:', project);
+          console.log('Fetched projects:', projects);
           const config = projects.find(p => p.slug && p.slug.toLowerCase() === project.toLowerCase());
+          console.log('Matched config:', config);
           return config && config.ssoLoginUrl ? config.ssoLoginUrl : null;
-        } catch (e) { return null; }
+        } catch (e) {
+          console.error('Error in getSsoLoginUrl:', e);
+          return null;
+        }
       }
 
       document.getElementById('loginForm').onsubmit = async function(e) {
@@ -67,11 +75,7 @@
           if (resp.ok && data.token) {
             msg.textContent = 'Login successful! Redirecting...';
             setTimeout(() => {
-              if (project === 'SharedUI') {
-                window.location.href = '/SirSluginston-SharedUI/home.html?project=' + encodeURIComponent(project);
-              } else if (project === 'sirsluginston-co') {
-                window.location.href = '/SirSluginston-SharedUI/home.html?project=' + encodeURIComponent(project);
-              }
+              window.location.href = '/SirSluginston-SharedUI/home.html?project=' + encodeURIComponent(project);
             }, 1000);
           } else {
             msg.textContent = 'Login failed: ' + (data.error || 'Invalid credentials.');

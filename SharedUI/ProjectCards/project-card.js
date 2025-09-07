@@ -15,7 +15,7 @@ const ProjectCard = {
       <a href="${proj.projectSiteUrl || proj.siteUrl || '#'}" style="text-decoration:none;color:inherit;">
         <img src="${proj.projectLogoUrl || proj.logoUrl || 'https://placehold.co/80x80/EEE/222?text=Logo'}" alt="Project Logo" class="project-logo">
         <div class="project-title">${proj.projectTitle || proj.title || ''}</div>
-        <div class="project-tagline"${taglineColor ? ` style=\"color:${taglineColor};font-weight:bold\"` : ' style=\"font-weight:bold\"'}>${proj.projectTagline || proj.tagline || ''}</div>
+  <div class="project-tagline">${proj.projectTagline || proj.tagline || ''}</div>
       </a>
     `;
     container.appendChild(card);

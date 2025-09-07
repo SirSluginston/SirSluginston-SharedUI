@@ -1,0 +1,81 @@
+<!--
+  SirSluginston SharedUI Golden Page Template
+  Usage: Copy this file for new pages, or use as a base for admin panel page generation.
+  All content (title, tagline, etc.) should be dynamically populated from backend config (e.g., projects.json).
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Page title will be set dynamically -->
+  <title><!--PAGE_TITLE--></title>
+  <!-- SharedUI CSS (dynamic path) -->
+  <link id="sharedui-css" rel="stylesheet" href="./SharedUI/SharedUI-border.css">
+  <link id="variables-css" rel="stylesheet" href="./SharedUI/variables.css">
+  <!-- Additional per-page CSS can be added here -->
+</head>
+<body>
+  <!-- Header/Navbar will be injected by SharedUI scripts if enabled in config -->
+  <div id="sharedui-header"></div>
+  <main>
+    <section class="hero">
+      <h1 id="page-title"><!--PAGE_TITLE--></h1>
+      <p id="page-tagline"><!--PAGE_TAGLINE--></p>
+    </section>
+    <!-- Main content goes here -->
+    <div id="page-content"><!--PAGE_CONTENT--></div>
+  </main>
+  <div id="sharedui-footer"></div>
+  <!-- SharedUI JS (dynamic path) -->
+  <script>
+    // Dynamic base path resolution
+    function getSharedUIBasePath() {
+      const scripts = document.getElementsByTagName('script');
+      for (let s of scripts) {
+        if (s.src && s.src.includes('sharedui.js')) {
+          return s.src.split('SharedUI/SharedUI')[0] + 'SharedUI/';
+        }
+      }
+      return './SharedUI/';
+    }
+    const sharedUIBase = getSharedUIBasePath();
+    // Dynamically load SharedUI core script
+    function loadScript(src, cb) {
+      const s = document.createElement('script');
+      s.src = src;
+      s.onload = cb;
+      document.body.appendChild(s);
+    }
+    loadScript(sharedUIBase + 'SharedUI/sharedui.js', function() {
+      // Wait for SharedUI to be ready, then inject header/footer/navbar as needed
+      if (typeof waitForSharedUILib === 'function') {
+        waitForSharedUILib(function() {
+          // Fetch page config from backend (e.g., /api/page-config?key=...) or static JSON
+          fetch('/SharedUI/Projects/projects.json')
+            .then(r => r.json())
+            .then(config => {
+              // Find config for this page (by key, href, or other identifier)
+              // Example: use window.location.pathname or a data-key attribute
+              const pageKey = document.body.getAttribute('data-page-key') || window.location.pathname;
+              const page = config.pages?.find(p => p.key === pageKey || p.href === window.location.pathname);
+              if (page) {
+                document.title = page.pageTitle;
+                document.getElementById('page-title').textContent = page.pageTitle;
+                document.getElementById('page-tagline').textContent = page.pageTagline || '';
+                // Optionally show/hide navbar/footer
+                if (page.navbar === false) document.getElementById('sharedui-header').style.display = 'none';
+                if (page.footer === false) document.getElementById('sharedui-footer').style.display = 'none';
+                // Optionally inject main content
+                if (page.contentHtml) document.getElementById('page-content').innerHTML = page.contentHtml;
+              }
+              // Inject SharedUI header/footer/navbar
+              if (typeof injectHeader === 'function') injectHeader();
+              if (typeof injectFooter === 'function') injectFooter();
+            });
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,3 +1,4 @@
+console.log('[SharedUI] modal.js loaded', window.location.href, document.currentScript && document.currentScript.src);
 // SharedUI Modal Component
 class SharedUIModal {
   constructor(modalEl) {
@@ -20,4 +21,4 @@ class SharedUIModal {
     document.querySelectorAll('.sharedui-modal').forEach(el => new SharedUIModal(el));
   }
 }
-window.SharedUIModal = SharedUIModal;
+if (!window.SharedUIModal) window.SharedUIModal = SharedUIModal;

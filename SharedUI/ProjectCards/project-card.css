@@ -31,5 +31,5 @@
 }
 .project-tagline {
   font-size: 1rem;
-  color: var(--color-text-secondary, #666);
+  color: inherit;
 }

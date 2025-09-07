@@ -1,7 +1,20 @@
 // === SharedUI Navbar Injection ===
 // Loads navbar HTML and populates links (with dropdowns) from SharedUIConfig (fetched from https://www.sirsluginston.com/projects.json).
 // Modular, dynamic, and ready for your next 17 projects.
-fetch('/SirSluginston-SharedUI/SharedUI/Navbar/navbar.html')
+// Helper to resolve SharedUI path from any subfolder
+function sharedUIBase() {
+  var path = window.location.pathname;
+  var idx = path.lastIndexOf('/SharedUI/');
+  if (idx !== -1) return path.substring(0, idx + '/SharedUI/'.length);
+  return 'SharedUI/';
+}
+function sharedUIPath(rel) {
+  var base = sharedUIBase();
+  if (base.endsWith('/')) return base + rel;
+  return base + '/' + rel;
+}
+
+fetch(sharedUIPath('Navbar/navbar.html'))
   .then(response => response.text())
   .then(html => {
     document.getElementById('site-navbar').innerHTML = html;
@@ -30,8 +43,22 @@ fetch('/SirSluginston-SharedUI/SharedUI/Navbar/navbar.html')
                 // Always append ?project=slug for internal links
                 // Append ? or & depending on existing query
                 let baseHref = page.href;
+                // Ensure .html extension
+                if (baseHref && !baseHref.endsWith('.html')) baseHref += '.html';
+                // If root-level page, use absolute path from server root (e.g. /home.html)
+                if (/^(\.\/)?(home|projects|assets|about|index|about\s|about-this-project|about-sirsluginston|aboutthisproject|aboutsirsluginstonco)(\.html)?$/i.test(baseHref.replace(/%20/g, '').replace(/\s+/g, '').toLowerCase())) {
+                  // Remove any leading ./
+                  baseHref = baseHref.replace(/^\.\//, '');
+                  // Ensure .html extension
+                  if (!baseHref.endsWith('.html')) baseHref += '.html';
+                  // Always use root-level absolute path
+                  baseHref = '/' + baseHref.replace(/^\//, '');
+                } else if (!baseHref.startsWith('./') && !baseHref.startsWith('/')) {
+                  baseHref = './' + baseHref;
+                }
                 let sep = baseHref.includes('?') ? '&' : '?';
                 dropA.href = baseHref + sep + 'project=' + encodeURIComponent(SharedUIConfig.slug);
+                console.log('[SharedUI][Navbar] dropA.href:', dropA.href, 'slug:', SharedUIConfig.slug);
                 // ...
                 // If this is the about-project page, use 'About {projectTitle}'
                 if (page.key === 'about-project' && SharedUIConfig.projectTitle) {
@@ -51,8 +78,17 @@ fetch('/SirSluginston-SharedUI/SharedUI/Navbar/navbar.html')
             } else {
               // Always append ?project=slug for internal links
               let baseHref2 = item.href;
+              if (baseHref2 && !baseHref2.endsWith('.html')) baseHref2 += '.html';
+              if (baseHref2 && /^(\.\/)?(home|projects|assets|about|index|about\s|about-this-project|about-sirsluginston|aboutthisproject|aboutsirsluginstonco)(\.html)?$/i.test(baseHref2.replace(/%20/g, '').replace(/\s+/g, '').toLowerCase())) {
+                baseHref2 = baseHref2.replace(/^\.\//, '');
+                if (!baseHref2.endsWith('.html')) baseHref2 += '.html';
+                baseHref2 = '/' + baseHref2.replace(/^\//, '');
+              } else if (baseHref2 && !baseHref2.startsWith('./') && !baseHref2.startsWith('/')) {
+                baseHref2 = './' + baseHref2;
+              }
               let sep2 = baseHref2 && baseHref2.includes('?') ? '&' : '?';
               dropA.href = baseHref2 + sep2 + 'project=' + encodeURIComponent(SharedUIConfig.slug);
+              console.log('[SharedUI][Navbar] dropA.href:', dropA.href, 'slug:', SharedUIConfig.slug);
               // ...
               // If this is the About This Project link, use 'About {projectTitle}'
               if ((item.text && item.text.toLowerCase().includes('about this project')) && SharedUIConfig.projectTitle) {
@@ -73,17 +109,24 @@ fetch('/SirSluginston-SharedUI/SharedUI/Navbar/navbar.html')
             if (page) {
               // Always append ?project=slug for internal links
               let baseHref3 = page.href;
+              if (baseHref3 && !baseHref3.endsWith('.html')) baseHref3 += '.html';
+              if (/^(\.\/)?(home|projects|assets|about|index|about\s|about-this-project|about-sirsluginston|aboutthisproject|aboutsirsluginstonco)(\.html)?$/i.test(baseHref3.replace(/%20/g, '').replace(/\s+/g, '').toLowerCase())) {
+                baseHref3 = baseHref3.replace(/^\.\//, '');
+                if (!baseHref3.endsWith('.html')) baseHref3 += '.html';
+                baseHref3 = '/' + baseHref3.replace(/^\//, '');
+              } else if (!baseHref3.startsWith('./') && !baseHref3.startsWith('/')) {
+                baseHref3 = './' + baseHref3;
+              }
               let sep3 = baseHref3.includes('?') ? '&' : '?';
               a.href = baseHref3 + sep3 + 'project=' + encodeURIComponent(SharedUIConfig.slug);
+              if (link.pageKey === 'home') {
+                console.log('[SharedUI][Navbar][DEBUG] Home link generated:', a.href, 'baseHref3:', baseHref3, 'sep3:', sep3, 'slug:', SharedUIConfig.slug);
+              } else {
+                console.log('[SharedUI][Navbar] a.href:', a.href, 'slug:', SharedUIConfig.slug);
+              }
               // ...
               a.textContent = page.pageTitle || page.key;
-              // Force Home link to always use home.html in URL
-              if (link.pageKey === 'home' && (page.href === 'index.html' || page.href === 'home.html')) {
-                  a.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    window.location.href = '/SirSluginston-SharedUI/home.html?project=' + encodeURIComponent(SharedUIConfig.slug);
-                });
-              }
+              // No special case for Home; all root-level links use absolute path (e.g., /home.html)
             } else {
               a.href = '#';
               a.textContent = link.pageKey;
@@ -91,8 +134,17 @@ fetch('/SirSluginston-SharedUI/SharedUI/Navbar/navbar.html')
           } else {
             // Always append ?project=slug for internal links
             let baseHref4 = link.href;
+            if (baseHref4 && !baseHref4.endsWith('.html')) baseHref4 += '.html';
+            if (baseHref4 && /^(\.\/)?(home|projects|assets|about|index|about\s|about-this-project|about-sirsluginston|aboutthisproject|aboutsirsluginstonco)(\.html)?$/i.test(baseHref4.replace(/%20/g, '').replace(/\s+/g, '').toLowerCase())) {
+              baseHref4 = baseHref4.replace(/^\.\//, '');
+              if (!baseHref4.endsWith('.html')) baseHref4 += '.html';
+              baseHref4 = '/' + baseHref4.replace(/^\//, '');
+            } else if (baseHref4 && !baseHref4.startsWith('./') && !baseHref4.startsWith('/')) {
+              baseHref4 = './' + baseHref4;
+            }
             let sep4 = baseHref4 && baseHref4.includes('?') ? '&' : '?';
             a.href = baseHref4 + sep4 + 'project=' + encodeURIComponent(SharedUIConfig.slug);
+            console.log('[SharedUI][Navbar] a.href:', a.href, 'slug:', SharedUIConfig.slug);
             // ...
             a.textContent = link.text;
           }

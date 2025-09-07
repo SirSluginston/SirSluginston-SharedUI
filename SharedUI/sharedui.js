@@ -1,62 +1,94 @@
+// --- SharedUI path helpers (top-level, reusable) ---
+function sharedUIBase() {
+  var path = window.location.pathname;
+  var idx = path.lastIndexOf('/SharedUI/');
+  if (idx !== -1) return path.substring(0, idx + '/SharedUI/'.length);
+  return 'SharedUI/';
+}
+function sharedUIPath(rel) {
+  var base = sharedUIBase();
+  if (base.endsWith('/')) return base + rel;
+  return base + '/' + rel;
+}
 
 // === SharedUI Core Utility Functions ===
 // All your config are belong to projects.json. Modular, future-proof, and API-ready.
 // Injects, abstracts, and generally makes your UI less of a mess.
 
+
+
+
 /**
- * Fetches the projects config from projects.json
+ * Fetches the projects config from the backend API
  * @returns {Promise<Array>} Array of project configs
  */
 async function getProjects() {
-  let projectsPath = 'https://www.sirsluginston.com/projects.json';
-  // Use local config if running on localhost or 127.0.0.1
-  if (
-    window.location.hostname === 'localhost' ||
-    window.location.hostname === '127.0.0.1'
-  ) {
-    projectsPath = '/SirSluginston-SharedUI/SharedUI/Projects/projects.json';
-  }
-  const resp = await fetch(projectsPath);
-  return resp.ok ? resp.json() : [];
+  const resp = await fetch(`${window.API_URL}/projects`);
+  if (!resp.ok) return [];
+  const data = await resp.json();
+  // Support both { projects: [...] } and [...] formats
+  return Array.isArray(data) ? data : data.projects || [];
 }
+// Expose getProjects globally for use in other scripts
+window.SharedUILib = window.SharedUILib || {};
+window.SharedUILib.getProjects = getProjects;
 
 /**
  * Injects header HTML and sets logo, title, tagline from config
  * @param {Object} config - Project config object
  */
 function injectHeader(config) {
-  fetch('/SirSluginston-SharedUI/SharedUI/Header/header.html').then(r => r.text()).then(html => {
+  console.debug('[SharedUI] injectHeader called', { config });
+  // Dynamically resolve path to header.html based on current location
+  function getHeaderPath() {
+    var path = window.location.pathname;
+    if (/\/SharedUI\//.test(path)) {
+      var afterSharedUI = path.split('/SharedUI/')[1] || '';
+      if (afterSharedUI.includes('/')) {
+        return '../Header/header.html';
+      }
+    }
+    return 'SharedUI/Header/header.html';
+  }
+  fetch(getHeaderPath()).then(r => r.text()).then(html => {
     document.getElementById('header-container').innerHTML = html;
     var logoEl = document.querySelector('.shared-header-logo');
-    if (logoEl && config.projectLogoUrl) logoEl.src = config.projectLogoUrl;
+    if (logoEl && config.projectLogoUrl) {
+      let logoPath = config.projectLogoUrl;
+      if (!/^(https?:)?\//.test(logoPath)) {
+        if (logoPath.startsWith('SharedUI/')) logoPath = sharedUIPath(logoPath.replace(/^SharedUI\//, ''));
+        else logoPath = sharedUIPath(logoPath);
+      }
+      console.log('[SharedUI] injectHeader: setting logo src', { logoPath, config, logoEl });
+      logoEl.src = logoPath;
+    } else {
+      console.error('[SharedUI] injectHeader: logoEl or config.projectLogoUrl missing', { logoEl, config });
+    }
     var headerTitleEl = document.querySelector('.shared-header-title');
     if (headerTitleEl && config.projectTitle) headerTitleEl.textContent = config.projectTitle;
     var headerTaglineEl = document.querySelector('.shared-header-tagline');
     if (headerTaglineEl && config.projectTagline) headerTaglineEl.textContent = config.projectTagline;
     // Inject account icon after header is present
-  // Inject account icon SVG from SharedUI/Assets/Icons/AccountIcon, styled
-    // Ensure CSS is loaded
-  var iconCss = document.querySelector('link[href="/SirSluginston-SharedUI/SharedUI/Assets/Icons/AccountIcon/account-icon.css"]');
+    var iconCss = document.querySelector('link[href*="Assets/Icons/AccountIcon/account-icon.css"]');
     if (!iconCss) {
       var link = document.createElement('link');
       link.rel = 'stylesheet';
-      link.href = '/SirSluginston-SharedUI/SharedUI/Assets/Icons/AccountIcon/account-icon.css';
+      link.href = sharedUIPath('Assets/Icons/AccountIcon/account-icon.css');
       document.head.appendChild(link);
     }
-  fetch('/SirSluginston-SharedUI/SharedUI/Assets/Icons/AccountIcon/account-icon.svg')
+    fetch(sharedUIPath('Assets/Icons/AccountIcon/account-icon.svg'))
       .then(response => response.ok ? response.text() : '')
       .then(svg => {
         var container = document.getElementById('account-inject');
         if (container) {
           container.innerHTML = '<div class="account-icon-container" id="shared-account-icon-container">' + svg + '</div>';
-          // Attach click handler to SVG or container
           var icon = container.querySelector('.account-icon-container, svg');
           if (icon) {
             icon.style.cursor = 'pointer';
             icon.title = 'Account Settings';
             icon.onclick = function(e) {
               e.preventDefault();
-              window.location.href = '/SirSluginston-SharedUI/SharedUI/Account/account.html';
+              window.location.href = sharedUIPath('Account/account.html');
             };
           }
         }
@@ -71,7 +103,17 @@ function injectHeader(config) {
  * @param {Object} config - Project config object
  */
 function injectFooter(config) {
-  fetch('/SirSluginston-SharedUI/SharedUI/Footer/footer.html').then(r => r.text()).then(html => {
+  function getFooterPath() {
+    var path = window.location.pathname;
+    if (/\/SharedUI\//.test(path)) {
+      var afterSharedUI = path.split('/SharedUI/')[1] || '';
+      if (afterSharedUI.includes('/')) {
+        return '../Footer/footer.html';
+      }
+    }
+    return 'SharedUI/Footer/footer.html';
+  }
+  fetch(getFooterPath()).then(r => r.text()).then(html => {
     var temp = document.createElement('div');
     temp.innerHTML = html;
     var p = temp.querySelector('p');

@@ -27,19 +27,30 @@
     <title>About This Project</title>
     <!-- SharedUI component styles: keep it snazzy -->
     <link rel="stylesheet" href="SharedUI/Header/header.css">
-    <link rel="stylesheet" href="SharedUI/Navbar/navbar.css">
-    <link rel="stylesheet" href="SharedUI/Body/body.css">
-    <link rel="stylesheet" href="SharedUI/Footer/footer.css">
-    <link rel="stylesheet" href="SharedUI/ThemeToggle/theme-toggle.css">
-    <link rel="stylesheet" href="SharedUI/Dropdown/dropdown.css">
-    <link rel="stylesheet" href="SharedUI/Modals/modal.css">
-    <link rel="stylesheet" href="SharedUI/Hero/hero.css">
-    <script src="SharedUI/sharedui.js"></script>
-    <script src="SharedUI/ThemeToggle/theme-toggle.js"></script>
-    <script src="SharedUI/Header/header.js"></script>
-    <script src="SharedUI/Dropdown/dropdown.js"></script>
-    <script src="SharedUI/Modals/modal.js"></script>
-    <script src="SharedUI/Hero/hero.js"></script>
+        <!-- SharedUI component styles: use dynamic base path -->
+        <link rel="stylesheet" href="" id="header-css">
+        <link rel="stylesheet" href="" id="navbar-css">
+        <link rel="stylesheet" href="" id="body-css">
+        <link rel="stylesheet" href="" id="footer-css">
+        <link rel="stylesheet" href="" id="theme-toggle-css">
+        <link rel="stylesheet" href="" id="dropdown-css">
+        <link rel="stylesheet" href="" id="modals-css">
+        <link rel="stylesheet" href="" id="hero-css">
+        <script>
+            // Set all SharedUI CSS paths dynamically
+            window.addEventListener('DOMContentLoaded', function() {
+                var base = (typeof window.sharedUIBase === 'function') ? window.sharedUIBase() : (window.sharedUIBase || './SharedUI/');
+                document.getElementById('header-css').href = base + 'Header/header.css';
+                document.getElementById('navbar-css').href = base + 'Navbar/navbar.css';
+                document.getElementById('body-css').href = base + 'Body/body.css';
+                document.getElementById('footer-css').href = base + 'Footer/footer.css';
+                document.getElementById('theme-toggle-css').href = base + 'ThemeToggle/theme-toggle.css';
+                document.getElementById('dropdown-css').href = base + 'Dropdown/dropdown.css';
+                document.getElementById('modals-css').href = base + 'Modals/modal.css';
+                document.getElementById('hero-css').href = base + 'Hero/hero.css';
+            });
+        </script>
+        <script src="config.js"></script>
 </head>
 <body>
     <div class="sharedui-outer-border">
@@ -68,36 +79,143 @@
     <!-- SharedUI Footer: the end, but also the beginning -->
         <div id="footer-container"></div>
     </div>
-        <!-- SharedUI JS: theme toggle, header, navbar, account injection -->
         <script>
-            function initDropdownsAfterNavbar() {
-                if (window.SharedUIDropdown) SharedUIDropdown.initAll();
-                if (window.SharedUIModal) SharedUIModal.initAll();
-            }
-            (async function() {
-                const { getProjects, injectHeader, injectFooter, applyBranding } = window.SharedUILib;
-                const projects = await getProjects();
-                const config = projects.find(p => (p.slug && p.slug.toLowerCase() === 'sharedui')) || projects[0];
-                window.SharedUIConfig = config;
-                applyBranding(config);
-                injectHeader(config);
-                injectFooter(config);
-                var heroContainer = document.getElementById('shared-hero-container');
-                var pageHref = window.location.pathname.split('/').pop() || 'About This Project.html';
-                var normPageHref = pageHref.endsWith('.html') ? pageHref.toLowerCase() : (pageHref + '.html').toLowerCase();
-                var pageConfig = (config.pages || []).find(p => {
-                    if (!p.href) return false;
-                    var normHref = p.href.toLowerCase();
-                    return normHref === normPageHref || normHref.replace('.html','') === pageHref.toLowerCase().replace('.html','');
-                });
-                if (window.SharedUIHero && heroContainer && pageConfig) {
-                    SharedUIHero.inject(heroContainer, pageConfig.pageTitle, pageConfig.pageTagline);
+            // Set all SharedUI CSS paths and load scripts only after DOMContentLoaded
+            window.addEventListener('DOMContentLoaded', function() {
+                var base = (typeof window.sharedUIBase === 'function') ? window.sharedUIBase() : (window.sharedUIBase || './SharedUI/');
+                document.getElementById('header-css').href = base + 'Header/header.css';
+                document.getElementById('navbar-css').href = base + 'Navbar/navbar.css';
+                document.getElementById('body-css').href = base + 'Body/body.css';
+                document.getElementById('footer-css').href = base + 'Footer/footer.css';
+                document.getElementById('theme-toggle-css').href = base + 'ThemeToggle/theme-toggle.css';
+                document.getElementById('dropdown-css').href = base + 'Dropdown/dropdown.css';
+                document.getElementById('modals-css').href = base + 'Modals/modal.css';
+                document.getElementById('hero-css').href = base + 'Hero/hero.css';
+                function loadScript(src, cb) {
+                    var s = document.createElement('script');
+                    s.src = src;
+                    s.onload = cb || null;
+                    document.body.appendChild(s);
                 }
-                var navbarScript = document.createElement('script');
-                navbarScript.src = 'SharedUI/Navbar/navbar.js';
-                navbarScript.onload = initDropdownsAfterNavbar;
-                document.body.appendChild(navbarScript);
-            })();
+                loadScript(base + 'sharedui.js', function() {
+                    loadScript(base + 'ThemeToggle/theme-toggle.js');
+                    loadScript(base + 'Header/header.js');
+                    loadScript(base + 'Dropdown/dropdown.js');
+                    loadScript(base + 'Modals/modal.js');
+                    loadScript(base + 'Hero/hero.js');
+                    loadScript(base + 'Navbar/navbar.js', function() {
+                        if (window.SharedUIDropdown) SharedUIDropdown.initAll();
+                        if (window.SharedUIModal) SharedUIModal.initAll();
+                        // --- Main UI logic: inject header, footer, hero, and navbar ---
+                        (async function() {
+                            const { getProjects, injectHeader, injectFooter, applyBranding } = window.SharedUILib;
+                            const projects = await getProjects();
+                            const config = projects.find(p => (p.slug && p.slug.toLowerCase() === 'sharedui')) || projects[0];
+                            window.SharedUIConfig = config;
+                            if (applyBranding) applyBranding(config);
+                            if (injectHeader) injectHeader(config);
+                            if (injectFooter) injectFooter(config);
+                            // Re-inject navbar after SharedUIConfig is set
+                            if (window.fetch && document.getElementById('site-navbar')) {
+                                fetch(base + 'Navbar/navbar.html')
+                                    .then(response => response.text())
+                                    .then(html => {
+                                        document.getElementById('site-navbar').innerHTML = html;
+                                        if (window.SharedUIConfig && Array.isArray(SharedUIConfig.navbarLinks)) {
+                                            var ul = document.querySelector('.shared-navbar-list');
+                                            ul.innerHTML = '';
+                                            SharedUIConfig.navbarLinks.forEach(function(link) {
+                                                var li = document.createElement('li');
+                                                // Dropdown support
+                                                if (link.dropdown && Array.isArray(link.dropdown)) {
+                                                    li.classList.add('sharedui-dropdown');
+                                                    var trigger = document.createElement('span');
+                                                    trigger.className = 'sharedui-dropdown-trigger';
+                                                    trigger.textContent = link.text;
+                                                    trigger.setAttribute('tabindex', '0');
+                                                    li.appendChild(trigger);
+                                                    var dropdownContent = document.createElement('div');
+                                                    dropdownContent.className = 'sharedui-dropdown-content';
+                                                    link.dropdown.forEach(function(item) {
+                                                        var dropA = document.createElement('a');
+                                                        // Support pageKey in dropdowns
+                                                        if (item.pageKey && Array.isArray(SharedUIConfig.pages)) {
+                                                            var page = SharedUIConfig.pages.find(p => p.key === item.pageKey);
+                                                            if (page) {
+                                                                let baseHref = page.href;
+                                                                if (baseHref && !baseHref.endsWith('.html')) baseHref += '.html';
+                                                                if (/^(\.\/)?(home|projects|assets|about|index)(\.html)?$/i.test(baseHref)) {
+                                                                    baseHref = baseHref.replace(/^\.\//, '');
+                                                                    if (!baseHref.endsWith('.html')) baseHref += '.html';
+                                                                    baseHref = '/' + baseHref;
+                                                                } else if (!baseHref.startsWith('./') && !baseHref.startsWith('/')) {
+                                                                    baseHref = './' + baseHref;
+                                                                }
+                                                                let sep = baseHref.includes('?') ? '&' : '?';
+                                                                dropA.href = baseHref + sep + 'project=' + encodeURIComponent(SharedUIConfig.slug);
+                                                                dropA.textContent = page.pageTitle || page.key;
+                                                            } else {
+                                                                dropA.href = '#';
+                                                                dropA.textContent = item.pageKey;
+                                                            }
+                                                        } else {
+                                                            dropA.href = item.href || '#';
+                                                            dropA.textContent = item.text;
+                                                        }
+                                                        dropdownContent.appendChild(dropA);
+                                                    });
+                                                    li.appendChild(dropdownContent);
+                                                } else if (link.pageKey && Array.isArray(SharedUIConfig.pages)) {
+                                                    var page = SharedUIConfig.pages.find(p => p.key === link.pageKey);
+                                                    if (page) {
+                                                        let baseHref = page.href;
+                                                        if (baseHref && !baseHref.endsWith('.html')) baseHref += '.html';
+                                                        if (/^(\.\/)?(home|projects|assets|about|index)(\.html)?$/i.test(baseHref)) {
+                                                            baseHref = baseHref.replace(/^\.\//, '');
+                                                            if (!baseHref.endsWith('.html')) baseHref += '.html';
+                                                            baseHref = '/' + baseHref;
+                                                        } else if (!baseHref.startsWith('./') && !baseHref.startsWith('/')) {
+                                                            baseHref = './' + baseHref;
+                                                        }
+                                                        let sep = baseHref.includes('?') ? '&' : '?';
+                                                        var a = document.createElement('a');
+                                                        a.href = baseHref + sep + 'project=' + encodeURIComponent(SharedUIConfig.slug);
+                                                        a.textContent = page.pageTitle || page.key;
+                                                        li.appendChild(a);
+                                                    } else {
+                                                        var a = document.createElement('a');
+                                                        a.href = '#';
+                                                        a.textContent = link.pageKey;
+                                                        li.appendChild(a);
+                                                    }
+                                                } else {
+                                                    var a = document.createElement('a');
+                                                    a.href = link.href || '#';
+                                                    a.textContent = link.text;
+                                                    li.appendChild(a);
+                                                }
+                                                ul.appendChild(li);
+                                            });
+                                        }
+                                        if (window.SharedUIDropdown) SharedUIDropdown.initAll();
+                                    });
+                            }
+                            // Set hero content from config
+                            var heroContainer = document.getElementById('shared-hero-container');
+                            var pageHref = window.location.pathname.split('/').pop() || 'About This Project.html';
+                            var normPageHref = pageHref.endsWith('.html') ? pageHref.toLowerCase() : (pageHref + '.html').toLowerCase();
+                            var pageConfig = (config.pages || []).find(p => {
+                                if (!p.href) return false;
+                                var normHref = p.href.toLowerCase();
+                                return normHref === normPageHref || normHref.replace('.html','') === pageHref.toLowerCase().replace('.html','');
+                            });
+                            if (window.SharedUIHero && heroContainer && pageConfig) {
+                                SharedUIHero.inject(heroContainer, pageConfig.pageTitle, pageConfig.pageTagline);
+                            }
+                        })();
+                    });
+                });
+            });
         </script>
 </body>
 </html>
