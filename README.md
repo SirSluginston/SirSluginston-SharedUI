@@ -33,12 +33,6 @@ SharedUI is a pure frontend library: it contains only UI components (HTML, CSS, 
    - Populate dynamic content (like project lists) from your own app logic.
 4. **Customize with your own CSS variables for theming.**
 
-## Example: Project Selector
-
-<select id="projectSelector">
-  <option value="" disabled selected>Select a project...</option>
-  <!-- Your app should inject project options here -->
-</select>
 
 
 ## Philosophy
