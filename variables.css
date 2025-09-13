@@ -1,17 +1,22 @@
-
 /* --- SharedUI CSS Variables --- */
 
-/* Font families */
+/* Font families + fallback colors */
 :root {
   --font-sans: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, 'Liberation Sans', sans-serif;
   --font-serif: 'Georgia', 'Times New Roman', Times, serif;
   font-family: var(--font-sans);
+  /* Fallback colors used before explicit theme attribute is set */
+  --color-primary: #D2691E;
+  --color-secondary: #4B3A78;
+  --color-accent: #FFD700;
+  --color-bg: #FFFFF0;
+  --color-text: #2F2F2F;
 }
 
 /* Light mode color palette */
 :root[data-theme='light'] {
   --color-primary: #D2691E;
-    --color-secondary: #4B3A78; /* Project can override */
+  --color-secondary: #4B3A78; /* Project can override */
   --color-accent: #FFD700; /* Classic gold (bright, royal) */
   --color-bg: #FFFFF0;
   --color-text: #2F2F2F;
@@ -20,7 +25,7 @@
 /* Dark mode color palette */
 :root[data-theme='dark'] {
   --color-primary: #D2691E;
-    --color-secondary: #4B3A78; /* Project can override */
+  --color-secondary: #4B3A78; /* Project can override */
   --color-accent: #FFD700; /* Classic gold (bright, royal) */
   --color-bg: #2F2F2F;
   --color-text: #FFFFF0;

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<!-- SharedUI SSO Template (Copy & Customize)
+     Tokens: {{PROJECT_LOGO}} {{PROJECT_TITLE}} {{PROJECT_TAGLINE}} {{PROJECT_COLOR}} {{FOOTER_NOTE}} {{COPYRIGHT}} -->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{PROJECT_TITLE}} - Login</title>
+  <!-- Core SharedUI styles -->
+  <link rel="stylesheet" href="SirSluginston-SharedUI/variables.css">
+  <link rel="stylesheet" href="SirSluginston-SharedUI/SharedUI-border.css">
+  <link rel="stylesheet" href="SirSluginston-SharedUI/Header/header.css">
+  <link rel="stylesheet" href="SirSluginston-SharedUI/Footer/footer.css">
+  <link rel="stylesheet" href="SirSluginston-SharedUI/Dropdown/dropdown.css">
+  <link rel="stylesheet" href="SirSluginston-SharedUI/Modals/modal.css">
+  <link rel="stylesheet" href="SirSluginston-SharedUI/ThemeToggle/theme-toggle.css">
+  <style>
+    body { margin:0; min-height:100vh; display:flex; flex-direction:column; }
+    .sharedui-outer-border { min-height:100vh; }
+    .page-main { flex:1 0 auto; display:flex; flex-direction:column; align-items:center; justify-content:center; }
+    .login-container { background:#fff; border-radius:1rem; box-shadow:0 4px 24px #0002; padding:2.5rem 2rem; min-width:320px; text-align:center; }
+    .login-title { font-size:1.5rem; margin-bottom:1.2rem; color: var(--color-secondary); }
+    .login-btn { background: var(--color-secondary); color:#fff; border:none; border-radius:0.4rem; padding:0.7rem 2.2rem; font-size:1.1rem; font-weight:bold; cursor:pointer; margin-top:1.5rem; transition: background .2s; }
+    .login-btn:hover { background: var(--color-primary); }
+    .login-note { color:#666; font-size:0.9rem; margin-top:1.2rem; }
+  </style>
+</head>
+<body>
+  <div class="sharedui-outer-border">
+    <div id="header-container"></div>
+    <main class="page-main">
+      <div class="login-container">
+        <div class="login-title">{{PROJECT_TITLE}} Login</div>
+        <select id="projectSelector" class="shared-dropdown" style="margin-bottom:1rem;width:100%;padding:0.5rem;border-radius:0.3rem;font-size:1rem;">
+          <option value="" disabled selected>Select a project...</option>
+          <!-- Inject project options in consuming app -->
+        </select>
+        <form id="loginForm" style="margin-bottom:1rem;">
+          <input type="email" id="loginEmail" placeholder="Email" required style="width:100%;margin-bottom:0.5rem;padding:0.5rem;" />
+          <input type="password" id="loginPassword" placeholder="Password" required style="width:100%;margin-bottom:0.5rem;padding:0.5rem;" />
+          <button class="login-btn" type="submit">Login</button>
+        </form>
+        <div id="loginMessage" style="color:var(--color-primary);font-weight:bold;"></div>
+        <div class="login-note">(Placeholder SSO — wire to backend as needed)</div>
+      </div>
+    </main>
+    <div id="footer-container"></div>
+  </div>
+  <!-- Core scripts -->
+  <script src="SirSluginston-SharedUI/sharedui.js"></script>
+  <script src="SirSluginston-SharedUI/ThemeToggle/theme-toggle.js"></script>
+  <script src="SirSluginston-SharedUI/Dropdown/dropdown.js"></script>
+  <script src="SirSluginston-SharedUI/Modals/modal.js"></script>
+  <script>
+    // Replace with dynamic project list retrieval
+    const projects = [];
+
+    const selector = document.getElementById('projectSelector');
+    projects.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.slug;
+      opt.textContent = p.projectTitle;
+      selector.appendChild(opt);
+    });
+
+    const config = {
+      projectLogoUrl: '{{PROJECT_LOGO}}',
+      projectTitle: '{{PROJECT_TITLE}}',
+      projectTagline: '{{PROJECT_TAGLINE}}',
+      projectColor: '{{PROJECT_COLOR}}',
+      footerNote: '{{FOOTER_NOTE}}',
+      copyright: '{{COPYRIGHT}}'
+    };
+    SharedUILib.applyBranding(config);
+    SharedUILib.injectHeader(config);
+    SharedUILib.injectFooter(config);
+
+    document.getElementById('loginForm').onsubmit = function(e) {
+      e.preventDefault();
+      const msg = document.getElementById('loginMessage');
+      msg.textContent = 'Authenticating...';
+      setTimeout(()=>{ msg.textContent='Success (demo)'; }, 900);
+    };
+  </script>
+</body>
+</html>
