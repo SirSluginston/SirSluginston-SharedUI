@@ -20,32 +20,22 @@ SharedUI is a pure frontend library: it contains only UI components (HTML, CSS, 
 ## Usage
 
 1. **Add SharedUI to your project:**
-   - As an npm package (if published), or
+   - As an npm package, or
    - Copy the `SharedUI/` folder and CSS files into your project.
 2. **Reference the components in your HTML:**
-   ```html
+
    <link rel="stylesheet" href="SharedUI/Dropdown/dropdown.css">
    <script src="SharedUI/Dropdown/dropdown.js"></script>
    <!-- Repeat for other components as needed -->
-   ```
+
 3. **Use the UI components in your pages:**
    - Example: Add a dropdown, modal, or header from SharedUI.
    - Populate dynamic content (like project lists) from your own app logic.
 4. **Customize with your own CSS variables for theming.**
 
-## Example: Project Selector
-```html
-<select id="projectSelector">
-  <option value="" disabled selected>Select a project...</option>
-  <!-- Your app should inject project options here -->
-</select>
-```
+
 
 ## Philosophy
 - **Plug-and-play:** Works in any project with minimal setup.
 - **Minimal:** No dependencies, no backend, no config.
 - **Strategic:** Easy updates and consistent branding.
-
----
-
-For questions or contributions, open an issue or PR!
