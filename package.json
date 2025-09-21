@@ -1,6 +1,6 @@
 {
   "name": "sirsluginston-sharedui",
-  "version": "2.2.6",
+  "version": "2.2.7",
   "description": "Reusable interface components for consistent and modular user experiences across all SirSluginston projects.",
   "main": "SharedUI/sharedui.js",
   "scripts": {

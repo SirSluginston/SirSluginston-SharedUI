@@ -17,7 +17,13 @@ function sharedUIPath(rel) {
 fetch(sharedUIPath('Navbar/navbar.html'))
   .then(response => response.text())
   .then(html => {
-    document.getElementById('site-navbar').innerHTML = html;
+    // Backwards compatible target resolution: prefer new #site-navbar, fallback to legacy #navbar-container
+    var target = document.getElementById('site-navbar');
+    if (!target) {
+      console.warn('[SharedUI][Navbar] No #site-navbar found');
+      return;
+    }
+    target.innerHTML = html;
     if (window.SharedUIConfig && Array.isArray(SharedUIConfig.navbarLinks)) {
       var ul = document.querySelector('.shared-navbar-list');
       ul.innerHTML = '';
