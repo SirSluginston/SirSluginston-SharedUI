@@ -24,9 +24,9 @@
 }
 
 .sharedui-modal-content {
-  background: var(--modal-bg);
-  color: var(--modal-text);
-  border: 3px solid var(--modal-border);
+  background: var(--color-bg);
+  color: var(--color-text);
+  border: 3px solid var(--color-secondary);
   border-radius: 1rem;
   min-width: 320px;
   max-width: 90vw;

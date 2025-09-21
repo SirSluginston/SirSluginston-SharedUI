@@ -17,21 +17,60 @@ SharedUI is a pure frontend library: it contains only UI components (HTML, CSS, 
 - `Account/` – Account/profile UI (login, signup, etc.)
 - `Assets/` – Asset rendering helpers
 
+
 ## Usage
 
 1. **Add SharedUI to your project:**
    - As an npm package, or
    - Copy the `SharedUI/` folder and CSS files into your project.
+
 2. **Reference the components in your HTML:**
-
-   <link rel="stylesheet" href="SharedUI/Dropdown/dropdown.css">
-   <script src="SharedUI/Dropdown/dropdown.js"></script>
+   ```html
+   <link rel="stylesheet" href="SharedUI/Header/header.css">
+   <link rel="stylesheet" href="SharedUI/Navbar/navbar.css">
+   <link rel="stylesheet" href="SharedUI/Hero/hero.css">
+   <link rel="stylesheet" href="SharedUI/Body/body.css">
+   <link rel="stylesheet" href="SharedUI/variables.css">
+   <script src="SharedUI/sharedui.js"></script>
+   <script src="SharedUI/Hero/hero.js"></script>
    <!-- Repeat for other components as needed -->
+   ```
 
-3. **Use the UI components in your pages:**
-   - Example: Add a dropdown, modal, or header from SharedUI.
-   - Populate dynamic content (like project lists) from your own app logic.
-4. **Customize with your own CSS variables for theming.**
+3. **Inject UI components dynamically:**
+   ```js
+   import { projects } from './projects-config.js';
+   const project = projects.find(p => p.projectKey === 'your-project-key');
+   const page = project.pages.find(pg => pg.pageKey === 'your-page-key');
+   const config = {
+     projectTitle: project.projectTitle,
+     projectTagline: project.projectTagline,
+     pageTitle: page.pageTitle,
+     pageTagline: page.pageTagline,
+     hasHeader: page.hasHeader !== false,
+     hasNavbar: page.hasNavbar !== false,
+     hasHero: page.hasHero !== false,
+     hasBody: page.hasBody !== false,
+     hasFooter: page.hasFooter !== false,
+     navbar: { links: project.pages.filter(p => p.inNavbar).map(p => ({ href: p.href, text: p.text })) }
+   };
+
+   if (window.SharedUILib) {
+     window.SharedUILib.applyBranding(config);
+     if (config.hasHeader) window.SharedUILib.injectHeader(config);
+     if (config.hasNavbar) window.SharedUILib.injectNavbar(config);
+     if (config.hasHero) window.SharedUILib.injectHero(config);
+     if (config.hasFooter) window.SharedUILib.injectFooter(config);
+   }
+   ```
+
+4. **Config Contract:**
+   - `projectTitle`, `projectTagline`, `pageTitle`, `pageTagline`: Strings for branding and hero.
+   - `hasHeader`, `hasNavbar`, `hasHero`, `hasBody`, `hasFooter`: Booleans to control injection.
+   - `navbar.links`: Array of `{ href, text }` for navbar links.
+
+5. **Theming:**
+   - Customize with CSS variables in `variables.css`.
+   - Theme toggle supported via `ThemeToggle/theme-toggle.js`.
 
 ## SSO / Login Template
 A reusable SSO page template is provided at `templates/sso-index.template.html`.
@@ -84,8 +123,6 @@ Recent improvements:
 - Default light theme auto-applied if none set
 - Fallback root CSS variables ensure immediate color availability
 - Added SSO template for rapid bootstrap
-
-
 
 ## Contributing
 Keep contributions UI-only. No backend calls, no environment-specific logic. For project data, rely on external JSON/manifest inputs.

@@ -68,10 +68,50 @@ function applyBranding(config) {
   if (config.projectTitle) document.title = config.projectTitle;
 }
 
+
+/**
+ * Injects navbar HTML and sets links from config
+ * @param {Object} config - { navbar: { links: [{ href, text }] } }
+ */
+function injectNavbar(config) {
+  fetch(_sharedUIPath('Navbar/navbar.html'))
+    .then(r => r.ok ? r.text() : Promise.reject(r.status))
+    .then(html => {
+      const host = document.getElementById('navbar-container');
+      if (!host) {
+        console.warn('[SharedUI] No #navbar-container found for navbar injection');
+        return;
+      }
+      host.innerHTML = html;
+      // Optionally set links if needed
+      // ...
+    })
+    .catch(err => console.error('[SharedUI] Failed to load navbar.html', err));
+}
+
+/**
+ * Injects hero section using window.SharedUIHero
+ * @param {Object} config - { pageTitle, pageTagline }
+ */
+function injectHero(config) {
+  const host = document.getElementById('hero-container');
+  if (!host) {
+    console.warn('[SharedUI] No #hero-container found for hero injection');
+    return;
+  }
+  if (window.SharedUIHero?.inject) {
+    window.SharedUIHero.inject(host, config.pageTitle, config.pageTagline);
+  } else {
+    console.warn('[SharedUI] SharedUIHero.inject not available');
+  }
+}
+
 // Export for use in other scripts
 window.SharedUILib = {
   injectHeader,
   injectFooter,
+  injectNavbar,
+  injectHero,
   applyBranding,
   basePath: _sharedUIBase
 };

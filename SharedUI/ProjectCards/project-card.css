@@ -10,6 +10,7 @@
   flex-direction: column;
   align-items: center;
   transition: box-shadow 0.2s;
+  color: var(--color-text);
 }
 .project-card:hover {
   box-shadow: 0 4px 24px 0 var(--color-accent);
@@ -28,8 +29,9 @@
   font-size: 1.2rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
+  color: var(--color-text);
 }
 .project-tagline {
   font-size: 1rem;
-  color: inherit;
+  color: var(--color-text);
 }

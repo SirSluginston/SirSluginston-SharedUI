@@ -30,6 +30,7 @@
   box-sizing: border-box;
   background: var(--color-primary);
   border: 2px solid var(--color-secondary);
+  padding: 0.4rem 0;
 }
 
 /* Navbar list layout */
