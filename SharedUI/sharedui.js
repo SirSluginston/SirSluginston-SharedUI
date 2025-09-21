@@ -77,9 +77,9 @@ function injectNavbar(config) {
   fetch(_sharedUIPath('Navbar/navbar.html'))
     .then(r => r.ok ? r.text() : Promise.reject(r.status))
     .then(html => {
-      const host = document.getElementById('navbar-container');
+      const host = document.getElementById('site-navbar');
       if (!host) {
-        console.warn('[SharedUI] No #navbar-container found for navbar injection');
+        console.warn('[SharedUI] No #site-navbar found for navbar injection');
         return;
       }
       host.innerHTML = html;
