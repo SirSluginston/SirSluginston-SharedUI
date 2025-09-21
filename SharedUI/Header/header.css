@@ -37,7 +37,8 @@ header.shared-header {
   background-color: var(--color-primary);
   color: var(--color-bg);
   padding: 0 1.5em;
-  border: 2px solid var(--color-secondary);
+  border-top: 1px solid var(--color-secondary);
+  border-bottom: 1px solid var(--color-secondary);
   height: 128px;
   position: relative;
   width: 100%;
