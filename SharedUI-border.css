@@ -37,28 +37,28 @@ html, body {
 header.shared-header {
   border-top: 1px solid var(--color-secondary);
   border-bottom: 1px solid var(--color-secondary);
-  border-left: none;
-  border-right: none;
+  border-left: none !important;
+  border-right: none !important;
 }
 
 /* Navbar border (bottom only) */
 .shared-navbar {
   border-top: 1px solid var(--color-secondary);
   border-bottom: 1px solid var(--color-secondary);
-  border-left: none;
-  border-right: none;
+  border-left: none !important;
+  border-right: none !important;
 }
 
 .shared-body {
   border-top: 1px solid var(--color-secondary);
   border-bottom: 1px solid var(--color-secondary);
-  border-left: none;
-  border-right: none;
+  border-left: none !important;
+  border-right: none !important;
 }
 
 .shared-footer {
   border-top: 1px solid var(--color-secondary);
   border-bottom: 1px solid var(--color-secondary);
-  border-left: none;
-  border-right: none;
+  border-left: none !important;
+  border-right: none !important;
 }

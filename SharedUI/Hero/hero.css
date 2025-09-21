@@ -6,8 +6,10 @@
 		color: var(--color-bg);
 		border-top: 1px solid var(--color-secondary);
 		border-bottom: 1px solid var(--color-secondary);
-	border-radius: 0;
-	margin-bottom: 0;
+		border-left: none !important;
+		border-right: none !important;
+		border-radius: 0;
+		margin-bottom: 0;
 	box-shadow: 0 4px 24px #0001;
 	font-family: var(--font-sans);
 }
