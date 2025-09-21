@@ -1,4 +1,8 @@
 /* --- SharedUI Outer Border and Layout --- */
+/* Shared border between stacked sections */
+.sharedui-outer-border > * + * {
+  border-top: 1px solid var(--color-secondary) !important;
+}
 
 /* Main outer border for SharedUI */
 .sharedui-outer-border {
