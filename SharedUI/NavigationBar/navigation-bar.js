@@ -11,7 +11,7 @@ function sharedUIPath(rel) {
   if (base.endsWith('/')) return base + rel;
   return base + '/' + rel;
 }
-const navUrl = '/SirSluginston-SharedUI/SharedUI/NavigationBar/navigation-bar';
+const navUrl = 'SirSluginston-SharedUI/NavigationBar/navigation-bar.html';
 console.log('[DEBUG][NavigationBar] Fetching URL:', navUrl);
 fetch(navUrl)
   .then(response => {
