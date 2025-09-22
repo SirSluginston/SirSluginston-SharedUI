@@ -3,11 +3,11 @@
 Reusable UI components for consistent, modular user experiences across all SirSluginston projects.
 
 ## What is SharedUI?
-SharedUI is a pure frontend library: it contains only UI components (HTML, CSS, JS) and no backend, config, or project-specific logic. Use it to quickly add beautiful, consistent UI elements to any web project.
+SharedUI is a pure frontend library: it contains only UI components and their helpers (HTML, CSS, JS) and no backend, config, or project-specific logic. Use it to quickly add beautiful, consistent UI elements to any web project.
 
 ## Structure
 - `Header/` – Site headers, branding, navigation
-- `Navbar/` – Navigation bars and menus
+- `NavigationBar/` – Navigation bars and menus
 - `Footer/` – Site footers and legal info
 - `ThemeToggle/` – Theme switchers and color utilities
 - `Body/` – Page layout and containers
@@ -27,12 +27,13 @@ SharedUI is a pure frontend library: it contains only UI components (HTML, CSS, 
 2. **Reference the components in your HTML:**
    ```html
    <link rel="stylesheet" href="SharedUI/Header/header.css">
-   <link rel="stylesheet" href="SharedUI/Navbar/navbar.css">
+   <link rel="stylesheet" href="SharedUI/NavigationBar/navigation-bar.css">
    <link rel="stylesheet" href="SharedUI/Hero/hero.css">
    <link rel="stylesheet" href="SharedUI/Body/body.css">
    <link rel="stylesheet" href="SharedUI/variables.css">
    <script src="SharedUI/sharedui.js"></script>
    <script src="SharedUI/Hero/hero.js"></script>
+   <script src="SharedUI/NavigationBar/navigation-bar.js"></script>
    <!-- Repeat for other components as needed -->
    ```
 
@@ -47,11 +48,11 @@ SharedUI is a pure frontend library: it contains only UI components (HTML, CSS, 
      pageTitle: page.pageTitle,
      pageTagline: page.pageTagline,
      hasHeader: page.hasHeader !== false,
-     hasNavbar: page.hasNavbar !== false,
+   hasNavbar: page.hasNavbar !== false,
      hasHero: page.hasHero !== false,
      hasBody: page.hasBody !== false,
      hasFooter: page.hasFooter !== false,
-     navbar: { links: project.pages.filter(p => p.inNavbar).map(p => ({ href: p.href, text: p.text })) }
+   navbar: { links: project.pages.filter(p => p.inNavbar).map(p => ({ href: p.href, text: p.text })) }
    };
 
    if (window.SharedUILib) {
@@ -66,7 +67,7 @@ SharedUI is a pure frontend library: it contains only UI components (HTML, CSS, 
 4. **Config Contract:**
    - `projectTitle`, `projectTagline`, `pageTitle`, `pageTagline`: Strings for branding and hero.
    - `hasHeader`, `hasNavbar`, `hasHero`, `hasBody`, `hasFooter`: Booleans to control injection.
-   - `navbar.links`: Array of `{ href, text }` for navbar links.
+   - `navbar.links`: Array of `{ href, text }` for navigation bar links.
 
 5. **Theming:**
    - Customize with CSS variables in `variables.css`.

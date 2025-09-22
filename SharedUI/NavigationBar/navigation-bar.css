@@ -6,7 +6,6 @@
   display: block;
 }
 
-
 /* --- Navbar Styles (SharedUI) --- */
 
 /* Light mode: dropdown background = secondary, text = bg/ivory for readability */
@@ -20,7 +19,6 @@
   color: var(--color-accent);
   background: var(--color-secondary);
 }
-
 
 /* Main navbar container */
 .shared-navbar {

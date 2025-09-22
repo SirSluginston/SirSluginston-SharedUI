@@ -74,7 +74,7 @@ function applyBranding(config) {
  * @param {Object} config - { navbar: { links: [{ href, text }] } }
  */
 function injectNavbar(config) {
-  fetch(_sharedUIPath('Navbar/navbar.html'))
+  fetch(_sharedUIPath('NavigationBar/navigation-bar.html'))
     .then(r => r.ok ? r.text() : Promise.reject(r.status))
     .then(html => {
       const host = document.getElementById('site-navbar');
@@ -83,8 +83,8 @@ function injectNavbar(config) {
         return;
       }
       host.innerHTML = html;
-      // Optionally set links if needed
-      // ...
+  // Optionally set links if needed
+  // ...
     })
     .catch(err => console.error('[SharedUI] Failed to load navbar.html', err));
 }

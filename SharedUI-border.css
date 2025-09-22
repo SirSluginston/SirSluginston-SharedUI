@@ -10,10 +10,10 @@
   border-bottom: 2px solid var(--color-secondary);
   border-left: 2px solid var(--color-secondary);
   border-right: 2px solid var(--color-secondary);
-  border-radius: 0;
-  margin: 0;
-  width: 100%;
-  min-height: 100vh;
+  border-radius: 0.3rem;
+  margin: 1vw;
+  width: auto;
+  min-height: 96vh;
   background: var(--color-bg);
   box-sizing: border-box;
   overflow: hidden;
