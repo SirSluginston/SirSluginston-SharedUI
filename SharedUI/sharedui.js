@@ -28,6 +28,14 @@ function injectHeader(config) {
       const headerTaglineEl = document.querySelector('.shared-header-tagline');
       if (headerTaglineEl && config.projectTagline) headerTaglineEl.textContent = config.projectTagline;
       if (typeof initThemeToggle === 'function') initThemeToggle();
+      // Add click behavior to account icon
+      const accountIcon = document.getElementById('account-icon-injected');
+      if (accountIcon) {
+        accountIcon.onclick = function() {
+          // Redirect to account.html at project root
+          window.location.href = 'account.html';
+        };
+      }
     })
     .catch(err => console.error('[SharedUI] Failed to load header.html', err));
 }
